@@ -34,7 +34,7 @@ public class TheatreController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/getTheatresByName")
+    @RequestMapping("/city")
     public List<TheatreResponse> getTheatreByTheatreCity(@RequestParam String theatreCity) {
 
         return theatreService.getAllTheatreByTheatreCity(theatreCity);
@@ -43,7 +43,7 @@ public class TheatreController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/getTheatresByNameAndCity")
+    @RequestMapping("/city-and-name")
     public List<TheatreResponse> getTheatreByTheatreCityAndTheatreName(@RequestParam String theatreCity,
                                                                        @RequestParam String theatreName) {
 

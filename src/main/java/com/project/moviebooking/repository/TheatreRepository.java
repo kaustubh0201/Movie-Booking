@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TheatreRepository extends MongoRepository<Theatre, String> {
-    Optional<List<Theatre>> findByTheatreNameAndTheatreCity(String theatreName, String theatreCity);
+    Optional<List<Theatre>> findByTheatreCityAndTheatreName(String theatreCity, String theatreName);
     Optional<List<Theatre>> findByTheatreCity(String theatreCity);
 }

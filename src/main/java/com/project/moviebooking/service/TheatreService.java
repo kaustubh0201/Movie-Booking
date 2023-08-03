@@ -48,7 +48,7 @@ public class TheatreService {
 
     public List<TheatreResponse> getAllTheatreByTheatreCityAndTheatreName(String theatreCity, String theatreName) {
 
-        Optional<List<Theatre>> theatres = theatreRepository.findByTheatreNameAndTheatreCity(theatreCity, theatreName);
+        Optional<List<Theatre>> theatres = theatreRepository.findByTheatreCityAndTheatreName(theatreCity, theatreName);
 
         return (theatres.isPresent())
                 ? utility.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
