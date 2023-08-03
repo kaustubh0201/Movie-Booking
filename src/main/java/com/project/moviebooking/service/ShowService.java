@@ -17,12 +17,7 @@ public class ShowService {
     public void createShow(ShowRequest showRequest) {
 
         Show show = Show.builder()
-                .movieName(showRequest.getMovieName())
-                .theatreId(showRequest.getTheatreId())
-                .movieDuration(showRequest.getMovieDuration())
-                .releaseDate(showRequest.getReleaseDate())
-                .auditoriumToShowTime(showRequest.getAuditoriumToShowTime())
-                .build();
+                        .build();
 
         showRepository.save(show);
         log.info("Show added to the database with {}", show.getShowId());
