@@ -20,6 +20,7 @@ public class ShowService {
                 .movieName(showRequest.getMovieName())
                 .theatreId(showRequest.getTheatreId())
                 .movieDuration(showRequest.getMovieDuration())
+                .releaseDate(showRequest.getReleaseDate())
                 .auditoriumToShowTime(showRequest.getAuditoriumToShowTime())
                 .build();
 
@@ -27,7 +28,5 @@ public class ShowService {
         log.info("Show added to the database with {}", show.getShowId());
 
     }
-
-
 
 }

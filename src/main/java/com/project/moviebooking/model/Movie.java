@@ -8,21 +8,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-@Document("show")
+@Document("movie")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Show {
+public class Movie {
 
     @Id
-    private String showId;
     private String movieId;
-    private String theatreId;
-    private Integer auditorium;
-    private Date showTme;
+    private String movieName;
+    private Date releaseDate;
+    private Date exitDate;
+    private Integer movieDuration;
 
 }

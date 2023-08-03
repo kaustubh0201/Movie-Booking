@@ -17,5 +17,6 @@ public class TheatreRequest {
     private Map<Integer, Integer> auditoriumNumberToNumberOfSeats;
     private String theatreAddress;
     private String theatreCity;
+    private String theatreState;
 
 }

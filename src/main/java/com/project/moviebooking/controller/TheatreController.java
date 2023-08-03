@@ -26,7 +26,7 @@ public class TheatreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(@RequestBody TheatreRequest theatreRequest) {
+    public void createTheatre(@RequestBody TheatreRequest theatreRequest) {
 
         theatreService.createTheatre(theatreRequest);
 

@@ -6,18 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShowRequest {
+public class MovieResponse {
 
     private String movieId;
-    private String theatreId;
-    private Integer auditorium;
-    private Date showTime;
+    private String movieName;
+    private Date releaseDate;
+    private Date exitDate;
+    private Integer movieDuration;
 
 }

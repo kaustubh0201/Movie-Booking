@@ -31,6 +31,7 @@ public class TheatreService {
                 .auditoriumNumberToNumberOfSeats(theatreRequest.getAuditoriumNumberToNumberOfSeats())
                 .theatreAddress(theatreRequest.getTheatreAddress())
                 .theatreCity(theatreRequest.getTheatreCity())
+                .theatreState(theatreRequest.getTheatreState())
                 .build();
 
         theatreRepository.save(theatre);
@@ -52,6 +53,21 @@ public class TheatreService {
 
         return (theatres.isPresent())
                 ? utility.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
+    }
+
+    public TheatreResponse getTheatreByTheatreId(String theatreId) {
+
+        Optional<Theatre> theatre = theatreRepository.findById(theatreId);
+
+        return theatre.map(value -> TheatreResponse.builder()
+                .theatreId(value.getTheatreId())
+                .theatreName(value.getTheatreName())
+                .auditoriumNumberToNumberOfSeats(value.getAuditoriumNumberToNumberOfSeats())
+                .theatreAddress(value.getTheatreAddress())
+                .theatreCity(value.getTheatreCity())
+                .theatreState(value.getTheatreState())
+                .build()).orElse(null);
+
     }
 
 }
