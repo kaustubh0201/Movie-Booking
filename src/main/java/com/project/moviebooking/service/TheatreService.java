@@ -22,7 +22,7 @@ public class TheatreService {
     private TheatreRepository theatreRepository;
 
     @Autowired
-    private Utils utility;
+    private Utils utils;
 
     public void createTheatre(TheatreRequest theatreRequest) {
 
@@ -44,7 +44,7 @@ public class TheatreService {
         Optional<List<Theatre>> theatres = theatreRepository.findByTheatreCity(theatreCity);
 
         return (theatres.isPresent())
-                ? utility.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
+                ? utils.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
     }
 
     public List<TheatreResponse> getAllTheatreByTheatreCityAndTheatreName(String theatreCity, String theatreName) {
@@ -52,7 +52,7 @@ public class TheatreService {
         Optional<List<Theatre>> theatres = theatreRepository.findByTheatreCityAndTheatreName(theatreCity, theatreName);
 
         return (theatres.isPresent())
-                ? utility.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
+                ? utils.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
     }
 
     public TheatreResponse getTheatreByTheatreId(String theatreId) {

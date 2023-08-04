@@ -23,6 +23,6 @@ public class Show {
     private String movieId;
     private String theatreId;
     private Integer auditorium;
-    private Date showTme;
+    private Date showTime;
 
 }

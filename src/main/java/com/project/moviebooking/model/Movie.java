@@ -20,7 +20,6 @@ public class Movie {
     private String movieId;
     private String movieName;
     private Date releaseDate;
-    private Date exitDate;
     private Integer movieDuration;
 
 }

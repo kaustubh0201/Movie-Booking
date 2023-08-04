@@ -1,6 +1,8 @@
 package com.project.moviebooking.utils;
 
+import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.dto.TheatreResponse;
+import com.project.moviebooking.model.Movie;
 import com.project.moviebooking.model.Theatre;
 import org.springframework.stereotype.Component;
 
@@ -29,5 +31,26 @@ public class Utils {
                 .collect(Collectors.toList());
 
     }
+
+    private MovieResponse movieToMovieResponseTransformer(Movie movie) {
+
+        return MovieResponse.builder()
+                .movieId(movie.getMovieId())
+                .movieName(movie.getMovieName())
+                .releaseDate(movie.getReleaseDate())
+                .movieDuration(movie.getMovieDuration())
+                .build();
+
+    }
+
+    public List<MovieResponse> listMovieToListMovieResponseTransformer(List<Movie> movies) {
+
+        return movies.stream()
+                .map(this::movieToMovieResponseTransformer)
+                .collect(Collectors.toList());
+
+    }
+
+
 
 }

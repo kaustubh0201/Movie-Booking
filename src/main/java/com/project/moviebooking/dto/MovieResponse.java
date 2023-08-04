@@ -16,7 +16,6 @@ public class MovieResponse {
     private String movieId;
     private String movieName;
     private Date releaseDate;
-    private Date exitDate;
     private Integer movieDuration;
 
 }
