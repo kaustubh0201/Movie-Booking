@@ -7,21 +7,20 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Map;
+import java.util.List;
 
-@Document("theatre")
+@Document("booking")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Theatre {
+public class Booking {
 
     @Id
-    private String theatreId;
-    private String theatreName;
-    private Map<Integer, Integer> auditoriumNumberToNumberOfSeats;
-    private String theatreAddress;
-    private String theatreCity;
-    private String theatreState;
+    private String bookingId;
+    private String showId;
+    private String userId;
+    private String customerName;
+    private List<Integer> bookedSeats;
 
 }
