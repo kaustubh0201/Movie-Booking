@@ -1,25 +1,19 @@
-package com.project.moviebooking.model;
+package com.project.moviebooking.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("booking")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Booking {
+public class BookingResponse {
 
-    @Id
     private String bookingId;
-    private String showId;
-    private String userId;
+    private ShowResponse showResponse;
     private List<Integer> bookedSeats;
-
 }
