@@ -16,4 +16,5 @@ public class BookingResponse {
     private String bookingId;
     private ShowResponse showResponse;
     private List<Integer> bookedSeats;
+
 }
