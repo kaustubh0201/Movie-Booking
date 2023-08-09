@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,9 @@ public class User implements UserDetails {
     @Id
     private String userId;
     private String name;
+    @Indexed(unique = true)
     private String username;
+    @Indexed(unique = true)
     private String password;
     private boolean isVerified;
     private String otp;
