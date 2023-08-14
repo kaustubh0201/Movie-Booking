@@ -1,6 +1,10 @@
 package com.project.moviebooking.dto;
 
 
+import com.project.moviebooking.constraint.EmailIdConstraint;
+import com.project.moviebooking.constraint.NameConstraint;
+import com.project.moviebooking.constraint.PasswordConstraint;
+import com.project.moviebooking.constraint.UsernameConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,19 +18,17 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    @NotBlank(message = "Name cannot be empty")
-    @Pattern(regexp = "^[A-Za-z]+(?:\\s+[A-Za-z]+)*$")
+
+    @NameConstraint
     private String name;
 
-    @NotBlank(message = "Username cannot be empty")
-    @Pattern(regexp = "^[a-z_]{5,30}$")
+    @UsernameConstraint
     private String username;
 
-    @NotBlank(message = "Email Id cannot be empty")
-    @Pattern(regexp = "^(?!\\.)[a-zA-Z0-9._%+-]+(?<!\\.)@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @EmailIdConstraint
     private String emailId;
 
-    @NotBlank(message = "Password cannot be empty")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,20}$")
+    @PasswordConstraint
     private String password;
+
 }
