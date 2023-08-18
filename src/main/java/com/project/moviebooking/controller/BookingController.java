@@ -32,7 +32,7 @@ public class BookingController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<BookingResponse> getAllBookingsByUserId() {
+    public List<BookingResponse> getAllBookingsByUsername() {
 
         // TODO: add service for getting all the bookings by UserId
 

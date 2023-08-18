@@ -1,7 +1,9 @@
 package com.project.moviebooking.utils;
 
+import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.dto.TheatreResponse;
+import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.model.Movie;
 import com.project.moviebooking.model.Theatre;
 import org.springframework.stereotype.Component;

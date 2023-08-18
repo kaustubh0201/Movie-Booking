@@ -20,8 +20,7 @@ public class Booking {
     @Id
     private String bookingId;
     private String showId;
-    @Indexed(unique = true)
-    private String userId;
+    private String username;
     private List<Integer> bookedSeats;
 
 }
