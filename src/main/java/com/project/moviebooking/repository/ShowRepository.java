@@ -10,5 +10,6 @@ public interface ShowRepository extends MongoRepository<Show, String> {
 
     Optional<List<Show>> findByMovieId(String movieId);
     Optional<List<Show>> findByMovieIdAndTheatreId(String movieId, String theatreId);
+    Optional<Show> findByShowId(String showId);
 
 }

@@ -5,6 +5,8 @@ import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -24,7 +27,7 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createBooking(@RequestBody BookingRequest bookingRequest) {
+    public void createBooking(@RequestBody @NotNull BookingRequest bookingRequest) {
 
         bookingService.createBooking(bookingRequest);
 
@@ -34,9 +37,10 @@ public class BookingController {
     @ResponseStatus(HttpStatus.OK)
     public List<BookingResponse> getAllBookingsByUsername() {
 
-        // TODO: add service for getting all the bookings by UserId
+        String username = ((UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getUsername();
 
-        return null;
+        return bookingService.getAllBookingsByUsername(username);
     }
 
 

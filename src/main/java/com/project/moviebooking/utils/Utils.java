@@ -2,9 +2,11 @@ package com.project.moviebooking.utils;
 
 import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.dto.MovieResponse;
+import com.project.moviebooking.dto.ShowResponse;
 import com.project.moviebooking.dto.TheatreResponse;
 import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.model.Movie;
+import com.project.moviebooking.model.Show;
 import com.project.moviebooking.model.Theatre;
 import org.springframework.stereotype.Component;
 
@@ -53,6 +55,26 @@ public class Utils {
 
     }
 
+    public ShowResponse showToShowResponseTransformer(Show show,
+                                                      MovieResponse movieResponse, TheatreResponse theatreResponse) {
 
+        return ShowResponse.builder()
+                .showId(show.getShowId())
+                .movieResponse(movieResponse)
+                .theatreResponse(theatreResponse)
+                .auditorium(show.getAuditorium())
+                .showTime(show.getShowTime())
+                .build();
+
+    }
+
+    public BookingResponse bookingToBookingResponseTransformer(Booking booking, ShowResponse showResponse) {
+
+        return BookingResponse.builder()
+                .bookingId(booking.getBookingId())
+                .showResponse(showResponse)
+                .bookedSeats(booking.getBookedSeats())
+                .build();
+    }
 
 }

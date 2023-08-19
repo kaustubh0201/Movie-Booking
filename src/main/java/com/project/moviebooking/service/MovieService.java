@@ -44,4 +44,17 @@ public class MovieService {
 
     }
 
+    public MovieResponse getMovieByMovieId(String movieId) {
+
+        Optional<Movie> movie = movieRepository.findById(movieId);
+
+        return movie.map(value -> MovieResponse.builder()
+                .movieId(movieId)
+                .movieName(movie.get().getMovieName())
+                .releaseDate(movie.get().getReleaseDate())
+                .movieDuration(movie.get().getMovieDuration())
+                .build()).orElse(null);
+
+    }
+
 }
