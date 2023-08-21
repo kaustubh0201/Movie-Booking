@@ -3,6 +3,7 @@ package com.project.moviebooking.utils;
 import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.dto.ShowResponse;
+import com.project.moviebooking.dto.TheatreRequest;
 import com.project.moviebooking.dto.TheatreResponse;
 import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.model.Movie;
@@ -76,5 +77,32 @@ public class Utils {
                 .bookedSeats(booking.getBookedSeats())
                 .build();
     }
+
+    public Theatre theatreResponseToTheatreTransformer(TheatreRequest theatreRequest) {
+
+        return Theatre.builder()
+                .theatreName(theatreRequest.getTheatreName())
+                .auditoriumNumberToNumberOfSeats(theatreRequest.getAuditoriumNumberToNumberOfSeats())
+                .theatreAddress(theatreRequest.getTheatreAddress())
+                .theatreCity(theatreRequest.getTheatreCity())
+                .theatreState(theatreRequest.getTheatreState())
+                .build();
+
+    }
+
+    public TheatreResponse theatreResponseToTheatreTransformer(Theatre theatre) {
+
+        return TheatreResponse.builder()
+                .theatreId(theatre.getTheatreId())
+                .theatreName(theatre.getTheatreName())
+                .auditoriumNumberToNumberOfSeats(theatre.getAuditoriumNumberToNumberOfSeats())
+                .theatreAddress(theatre.getTheatreAddress())
+                .theatreCity(theatre.getTheatreCity())
+                .theatreState(theatre.getTheatreState())
+                .build();
+
+    }
+
+
 
 }

@@ -26,13 +26,7 @@ public class TheatreService {
 
     public void createTheatre(TheatreRequest theatreRequest) {
 
-        Theatre theatre = Theatre.builder()
-                .theatreName(theatreRequest.getTheatreName())
-                .auditoriumNumberToNumberOfSeats(theatreRequest.getAuditoriumNumberToNumberOfSeats())
-                .theatreAddress(theatreRequest.getTheatreAddress())
-                .theatreCity(theatreRequest.getTheatreCity())
-                .theatreState(theatreRequest.getTheatreState())
-                .build();
+        Theatre theatre = utils.theatreResponseToTheatreTransformer(theatreRequest);
 
         theatreRepository.save(theatre);
         log.info("Theatre added to the database with {}", theatre.getTheatreId());
@@ -59,14 +53,8 @@ public class TheatreService {
 
         Optional<Theatre> theatre = theatreRepository.findById(theatreId);
 
-        return theatre.map(value -> TheatreResponse.builder()
-                .theatreId(value.getTheatreId())
-                .theatreName(value.getTheatreName())
-                .auditoriumNumberToNumberOfSeats(value.getAuditoriumNumberToNumberOfSeats())
-                .theatreAddress(value.getTheatreAddress())
-                .theatreCity(value.getTheatreCity())
-                .theatreState(value.getTheatreState())
-                .build()).orElse(null);
+        return theatre.map(value -> utils.theatreResponseToTheatreTransformer(value))
+                .orElse(null);
 
     }
 
