@@ -1,7 +1,10 @@
 package com.project.moviebooking.utils;
 
+import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
+import com.project.moviebooking.dto.MovieRequest;
 import com.project.moviebooking.dto.MovieResponse;
+import com.project.moviebooking.dto.ShowRequest;
 import com.project.moviebooking.dto.ShowResponse;
 import com.project.moviebooking.dto.TheatreRequest;
 import com.project.moviebooking.dto.TheatreResponse;
@@ -9,6 +12,8 @@ import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.model.Movie;
 import com.project.moviebooking.model.Show;
 import com.project.moviebooking.model.Theatre;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -103,6 +108,49 @@ public class Utils {
 
     }
 
+    public Show showRequestToShowTransformer(ShowRequest showRequest) {
 
+        return Show.builder()
+                .movieId(showRequest.getMovieId())
+                .theatreId(showRequest.getTheatreId())
+                .auditorium(showRequest.getAuditorium())
+                .showTime(showRequest.getShowTime())
+                .build();
+
+    }
+
+    public MovieResponse movieToMovieResponse(Movie movie) {
+
+        return MovieResponse.builder()
+                .movieId(movie.getMovieId())
+                .movieName(movie.getMovieName())
+                .releaseDate(movie.getReleaseDate())
+                .movieDuration(movie.getMovieDuration())
+                .build();
+
+    }
+
+    public Movie movieRequestToMovieTransformer(MovieRequest movieRequest) {
+
+        return Movie.builder()
+                .movieName(movieRequest.getMovieName())
+                .releaseDate(movieRequest.getReleaseDate())
+                .movieDuration(movieRequest.getMovieDuration())
+                .build();
+
+    }
+
+    public Booking bookingRequestToBooking(BookingRequest bookingRequest) {
+
+        String username = ((UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getUsername();
+
+        return Booking.builder()
+                .showId(bookingRequest.getShowId())
+                .bookedSeats(bookingRequest.getBookedSeats())
+                .username(username)
+                .build();
+
+    }
 
 }

@@ -25,11 +25,7 @@ public class MovieService {
 
     public void createMovie(MovieRequest movieRequest) {
 
-        Movie movie = Movie.builder()
-                .movieName(movieRequest.getMovieName())
-                .releaseDate(movieRequest.getReleaseDate())
-                .movieDuration(movieRequest.getMovieDuration())
-                .build();
+        Movie movie = utils.movieRequestToMovieTransformer(movieRequest);
 
         movieRepository.save(movie);
         log.info("Movie added to the database with {}", movie.getMovieId());
@@ -48,12 +44,9 @@ public class MovieService {
 
         Optional<Movie> movie = movieRepository.findById(movieId);
 
-        return movie.map(value -> MovieResponse.builder()
-                .movieId(movieId)
-                .movieName(movie.get().getMovieName())
-                .releaseDate(movie.get().getReleaseDate())
-                .movieDuration(movie.get().getMovieDuration())
-                .build()).orElse(null);
+        return movie.map(value ->
+                utils.movieToMovieResponse(value))
+                .orElse(null);
 
     }
 

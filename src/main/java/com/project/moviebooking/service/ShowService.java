@@ -35,12 +35,7 @@ public class ShowService {
 
     public void createShow(ShowRequest showRequest) {
 
-        Show show = Show.builder()
-                .movieId(showRequest.getMovieId())
-                .theatreId(showRequest.getTheatreId())
-                .auditorium(showRequest.getAuditorium())
-                .showTime(showRequest.getShowTime())
-                .build();
+        Show show = utils.showRequestToShowTransformer(showRequest);
 
         showRepository.save(show);
         log.info("Show added to the database with {}", show.getShowId());
@@ -56,13 +51,7 @@ public class ShowService {
                         .orElse(Collections.emptyList()).stream()
                         .map(show -> {
                             TheatreResponse theatre = theatreService.getTheatreByTheatreId(show.getTheatreId());
-                            return ShowResponse.builder()
-                                    .showId(show.getShowId())
-                                    .movieResponse(movieResponse)
-                                    .theatreResponse(theatre)
-                                    .auditorium(show.getAuditorium())
-                                    .showTime(show.getShowTime())
-                                    .build();
+                            return utils.showToShowResponseTransformer(show, movieResponse, theatre);
                         })).toList();
 
     }
@@ -80,13 +69,8 @@ public class ShowService {
                                                         theatreResponse.getTheatreId())
                                                 .orElse(Collections.emptyList())
                                                 .stream()
-                                                .map(show -> ShowResponse.builder()
-                                                        .showId(show.getShowId())
-                                                        .movieResponse(movieResponse)
-                                                        .theatreResponse(theatreResponse)
-                                                        .auditorium(show.getAuditorium())
-                                                        .showTime(show.getShowTime())
-                                                        .build())
+                                                .map(show -> utils.showToShowResponseTransformer(show, movieResponse,
+                                                        theatreResponse))
                                 )
                 ).distinct().collect(Collectors.toList());
     }

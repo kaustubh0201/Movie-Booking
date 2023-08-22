@@ -32,14 +32,7 @@ public class BookingService {
 
     public void createBooking(BookingRequest bookingRequest) {
 
-        String username = ((UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal()).getUsername();
-
-        Booking booking = Booking.builder()
-                .showId(bookingRequest.getShowId())
-                .bookedSeats(bookingRequest.getBookedSeats())
-                .username(username)
-                .build();
+        Booking booking = utils.bookingRequestToBooking(bookingRequest);
 
         bookingRepository.save(booking);
         log.info("Booking added to the database with {}", booking.getBookingId());
