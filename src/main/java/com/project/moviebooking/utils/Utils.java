@@ -31,6 +31,7 @@ public class Utils {
                 .auditoriumNumberToNumberOfSeats(theatre.getAuditoriumNumberToNumberOfSeats())
                 .theatreAddress(theatre.getTheatreAddress())
                 .theatreCity(theatre.getTheatreCity())
+                .theatreState(theatre.getTheatreState())
                 .build();
     }
 

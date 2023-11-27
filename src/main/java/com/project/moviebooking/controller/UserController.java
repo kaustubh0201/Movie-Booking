@@ -6,6 +6,7 @@ import com.project.moviebooking.service.UserService;
 import com.project.moviebooking.dto.AuthenticationResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
 
     @Autowired
