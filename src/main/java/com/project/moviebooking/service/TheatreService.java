@@ -26,7 +26,7 @@ public class TheatreService {
 
     public void createTheatre(TheatreRequest theatreRequest) {
 
-        Theatre theatre = utils.theatreResponseToTheatreTransformer(theatreRequest);
+        Theatre theatre = utils.theatreRequestToTheatreTransformer(theatreRequest);
 
         theatreRepository.save(theatre);
         log.info("Theatre added to the database with {}", theatre.getTheatreId());

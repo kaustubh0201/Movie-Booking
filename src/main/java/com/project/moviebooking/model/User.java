@@ -10,13 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("user")
+@Document("users")
 public class User implements UserDetails {
 
     @Id
@@ -27,8 +29,8 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String emailId;
     private String password;
-    private boolean isVerified;
-    private String otp;
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
 
     @Override

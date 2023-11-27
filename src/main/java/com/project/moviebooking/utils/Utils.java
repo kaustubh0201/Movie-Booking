@@ -8,20 +8,28 @@ import com.project.moviebooking.dto.ShowRequest;
 import com.project.moviebooking.dto.ShowResponse;
 import com.project.moviebooking.dto.TheatreRequest;
 import com.project.moviebooking.dto.TheatreResponse;
+import com.project.moviebooking.dto.UserRequest;
 import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.model.Movie;
 import com.project.moviebooking.model.Show;
 import com.project.moviebooking.model.Theatre;
+import com.project.moviebooking.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Component
 public class Utils {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private TheatreResponse theatreToTheatreResponseTransformer(Theatre theatre) {
 
@@ -84,7 +92,18 @@ public class Utils {
                 .build();
     }
 
-    public Theatre theatreResponseToTheatreTransformer(TheatreRequest theatreRequest) {
+    public User userRequestToUserTransformer(UserRequest userRequest) {
+
+        return User.builder()
+                .name(userRequest.getName())
+                .username(userRequest.getUsername())
+                .emailId(userRequest.getEmailId())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .roles(List.of("ROLE_USER"))
+                .build();
+    }
+
+    public Theatre theatreRequestToTheatreTransformer(TheatreRequest theatreRequest) {
 
         return Theatre.builder()
                 .theatreName(theatreRequest.getTheatreName())
