@@ -1,8 +1,8 @@
 package com.project.moviebooking.controller;
 
-import com.project.moviebooking.component.JwtTokenProvider;
 import com.project.moviebooking.dto.AuthenticationRequest;
 import com.project.moviebooking.repository.UserRepository;
+import com.project.moviebooking.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +27,17 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    JwtService jwtService;
 
     @Autowired
     UserRepository userRepository;
 
     @PostMapping("/signin")
     public ResponseEntity signIn(@RequestBody AuthenticationRequest data) {
-
-        log.info(String.valueOf(data));
-
         try {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username,
+            String token = jwtService.generateAccessToken(username,
                     this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
                             "Username: " + username + "not found"
                     )).getRoles());
