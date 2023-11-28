@@ -28,10 +28,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/currentUser")
-    public ResponseEntity currentUser(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Map<Object, Object>> currentUser(@AuthenticationPrincipal UserDetails userDetails) {
 
         Map<Object, Object> model = new HashMap<>();
         model.put("username", userDetails.getUsername());
+
+        // userService.sendOTP("kaustubh1818@gmail.com", "12345");
 
         return ResponseEntity.ok(model);
     }

@@ -1,6 +1,7 @@
 package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.AuthenticationRequest;
+import com.project.moviebooking.dto.AuthenticationResponse;
 import com.project.moviebooking.repository.UserRepository;
 import com.project.moviebooking.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,19 +34,24 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
-    @PostMapping("/signin")
-    public ResponseEntity signIn(@RequestBody AuthenticationRequest data) {
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest data) {
         try {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtService.generateAccessToken(username,
-                    this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
-                            "Username: " + username + "not found"
-                    )).getRoles());
-            Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
-            model.put("token", token);
-            return ResponseEntity.ok((model));
+            List<String> roles = this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
+                    "Username: " + username + "not found!"
+            )).getRoles();
+
+            String accessToken = jwtService.generateAccessToken(username, roles);
+            String refreshToken = jwtService.generateRefreshToken(username, roles);
+
+            return ResponseEntity.ok(AuthenticationResponse.builder()
+                    .message("Token created for username " + username)
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build());
+
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
