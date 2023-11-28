@@ -2,6 +2,7 @@ package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.UserRequest;
 import com.project.moviebooking.service.UserService;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -33,16 +33,12 @@ public class UserController {
         Map<Object, Object> model = new HashMap<>();
         model.put("username", userDetails.getUsername());
 
-        // userService.sendOTP("kaustubh1818@gmail.com", "12345");
-
         return ResponseEntity.ok(model);
     }
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody UserRequest userRequest) {
-
         userService.createUser(userRequest);
-
     }
 }
