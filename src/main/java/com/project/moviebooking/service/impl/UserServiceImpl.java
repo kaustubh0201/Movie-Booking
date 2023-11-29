@@ -6,7 +6,6 @@ import com.project.moviebooking.dto.UserRequest;
 import com.project.moviebooking.model.User;
 import com.project.moviebooking.repository.UserRepository;
 import com.project.moviebooking.service.UserService;
-import com.project.moviebooking.service.impl.JwtServiceImpl;
 import com.project.moviebooking.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +24,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -174,12 +171,5 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(authenticationResponse);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
-                "Username: " + username + " not found"
-        ));
     }
 }

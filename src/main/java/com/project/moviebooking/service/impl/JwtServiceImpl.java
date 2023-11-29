@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -35,7 +36,7 @@ public class JwtServiceImpl implements JwtService {
     private long refreshTokenValidity;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserDetailsService userDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -82,7 +83,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userService.loadUserByUsername(extractUsername(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(extractUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
