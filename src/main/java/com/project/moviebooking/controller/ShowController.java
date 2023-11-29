@@ -2,7 +2,7 @@ package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.ShowRequest;
 import com.project.moviebooking.dto.ShowResponse;
-import com.project.moviebooking.service.ShowService;
+import com.project.moviebooking.service.impl.ShowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ShowController {
 
     @Autowired
-    private ShowService showService;
+    private ShowServiceImpl showService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,6 +1,6 @@
 package com.project.moviebooking.component;
 
-import com.project.moviebooking.service.JwtService;
+import com.project.moviebooking.service.impl.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -18,7 +18,7 @@ import java.io.IOException;
 public class JwtTokenFilter extends GenericFilterBean {
 
     @Autowired
-    private JwtService jwtService;
+    private JwtServiceImpl jwtService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

@@ -2,7 +2,7 @@ package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
-import com.project.moviebooking.service.BookingService;
+import com.project.moviebooking.service.impl.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +22,7 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-    private BookingService bookingService;
+    private BookingServiceImpl bookingService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

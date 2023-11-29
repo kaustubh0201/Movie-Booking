@@ -2,7 +2,7 @@ package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.TheatreRequest;
 import com.project.moviebooking.dto.TheatreResponse;
-import com.project.moviebooking.service.TheatreService;
+import com.project.moviebooking.service.impl.TheatreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import java.util.List;
 public class TheatreController {
 
     @Autowired
-    private TheatreService theatreService;
+    private TheatreServiceImpl theatreService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

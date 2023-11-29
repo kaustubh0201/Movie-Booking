@@ -2,7 +2,7 @@ package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.AuthenticationResponse;
 import com.project.moviebooking.dto.UserRequest;
-import com.project.moviebooking.service.UserService;
+import com.project.moviebooking.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/currentUser")
     public ResponseEntity<Map<Object, Object>> currentUser(@AuthenticationPrincipal UserDetails userDetails) {

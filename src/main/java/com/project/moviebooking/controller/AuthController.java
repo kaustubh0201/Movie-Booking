@@ -2,7 +2,7 @@ package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.AuthenticationRequest;
 import com.project.moviebooking.dto.AuthenticationResponse;
-import com.project.moviebooking.service.UserService;
+import com.project.moviebooking.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest data) {
