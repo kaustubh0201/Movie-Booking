@@ -7,6 +7,7 @@ import com.project.moviebooking.repository.MovieRepository;
 import com.project.moviebooking.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -31,6 +32,7 @@ public class MovieService {
         log.info("Movie added to the database with {}", movie.getMovieId());
     }
 
+    @Cacheable(value = "movieCache", key = "#movieName")
     public List<MovieResponse> getAllMovieByMovieName(String movieName) {
 
         Optional<List<Movie>> movies = movieRepository.findByMovieName(movieName);
@@ -40,6 +42,7 @@ public class MovieService {
 
     }
 
+    @Cacheable(value = "movieCache", key = "#movieId")
     public MovieResponse getMovieByMovieId(String movieId) {
 
         Optional<Movie> movie = movieRepository.findById(movieId);

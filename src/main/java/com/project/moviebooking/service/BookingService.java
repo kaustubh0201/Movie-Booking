@@ -7,11 +7,9 @@ import com.project.moviebooking.repository.BookingRepository;
 import com.project.moviebooking.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +37,7 @@ public class BookingService {
 
     }
 
+    @Cacheable(value = "bookingCache", key = "#username")
     public List<BookingResponse> getAllBookingsByUsername(String username) {
 
         Optional<List<Booking>> bookings = bookingRepository.findByUsername(username);
@@ -52,5 +51,4 @@ public class BookingService {
                 )
                 .orElse(Collections.emptyList());
     }
-
 }

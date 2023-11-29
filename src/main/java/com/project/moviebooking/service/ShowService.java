@@ -10,6 +10,7 @@ import com.project.moviebooking.repository.ShowRepository;
 import com.project.moviebooking.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -42,6 +43,7 @@ public class ShowService {
 
     }
 
+    @Cacheable(value = "showCache", key = "#movieName")
     public List<ShowResponse> getAllShowsByMovie(String movieName) {
 
         List<MovieResponse> movies = movieService.getAllMovieByMovieName(movieName);
@@ -56,6 +58,7 @@ public class ShowService {
 
     }
 
+    @Cacheable(value = "showCache", key = "#movieName + '_' + #cityName")
     public List<ShowResponse> getAllShowByMovieAndCity(String movieName, String cityName) {
 
         List<TheatreResponse> theatres = theatreService.getAllTheatreByTheatreCity(cityName);
@@ -75,6 +78,7 @@ public class ShowService {
                 ).distinct().collect(Collectors.toList());
     }
 
+    @Cacheable(value = "showCache", key = "#showId")
     public ShowResponse getShowByShowId(String showId) {
 
         Optional<Show> show = showRepository.findByShowId(showId);

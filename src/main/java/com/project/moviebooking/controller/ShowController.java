@@ -34,9 +34,7 @@ public class ShowController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/movie")
     public List<ShowResponse> getAllShowsByMovie(@RequestParam String movieName) {
-
         return showService.getAllShowsByMovie(movieName);
-
     }
 
     @GetMapping
@@ -44,9 +42,7 @@ public class ShowController {
     @RequestMapping("/movie-and-city")
     public List<ShowResponse> getAllShowsByMovieAndCity(@RequestParam String movieName,
                                                         @RequestParam String cityName) {
-
         return showService.getAllShowByMovieAndCity(movieName, cityName);
-
     }
 
 }

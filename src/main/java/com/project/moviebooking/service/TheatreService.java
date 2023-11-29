@@ -7,6 +7,7 @@ import com.project.moviebooking.repository.TheatreRepository;
 import com.project.moviebooking.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -33,6 +34,7 @@ public class TheatreService {
 
     }
 
+    @Cacheable(value = "theatreCache", key = "#theatreCity")
     public List<TheatreResponse> getAllTheatreByTheatreCity(String theatreCity) {
 
         Optional<List<Theatre>> theatres = theatreRepository.findByTheatreCity(theatreCity);
@@ -41,6 +43,7 @@ public class TheatreService {
                 ? utils.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
     }
 
+    @Cacheable(value = "theatreCache", key = "#theatreCity + '_' + #theatreName")
     public List<TheatreResponse> getAllTheatreByTheatreCityAndTheatreName(String theatreCity, String theatreName) {
 
         Optional<List<Theatre>> theatres = theatreRepository.findByTheatreCityAndTheatreName(theatreCity, theatreName);
@@ -49,6 +52,7 @@ public class TheatreService {
                 ? utils.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
     }
 
+    @Cacheable(value = "theatreCache", key = "#theatreId")
     public TheatreResponse getTheatreByTheatreId(String theatreId) {
 
         Optional<Theatre> theatre = theatreRepository.findById(theatreId);

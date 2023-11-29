@@ -27,18 +27,14 @@ public class TheatreController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTheatre(@RequestBody TheatreRequest theatreRequest) {
-
         theatreService.createTheatre(theatreRequest);
-
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/city")
     public List<TheatreResponse> getTheatreByTheatreCity(@RequestParam String theatreCity) {
-
         return theatreService.getAllTheatreByTheatreCity(theatreCity);
-
     }
 
     @GetMapping
@@ -46,9 +42,6 @@ public class TheatreController {
     @RequestMapping("/city-and-name")
     public List<TheatreResponse> getTheatreByTheatreCityAndTheatreName(@RequestParam String theatreCity,
                                                                        @RequestParam String theatreName) {
-
         return theatreService.getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName);
-
     }
-
 }

@@ -27,17 +27,13 @@ public class MovieController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createMovie(@RequestBody MovieRequest movieRequest) {
-
         movieService.createMovie(movieRequest);
-
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<MovieResponse> getMovieByMovieName(@RequestParam String movieName) {
-
         return movieService.getAllMovieByMovieName(movieName);
-
     }
 
 }

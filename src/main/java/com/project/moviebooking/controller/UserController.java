@@ -1,8 +1,8 @@
 package com.project.moviebooking.controller;
 
+import com.project.moviebooking.dto.AuthenticationResponse;
 import com.project.moviebooking.dto.UserRequest;
 import com.project.moviebooking.service.UserService;
-import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +38,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody UserRequest userRequest) {
-        userService.createUser(userRequest);
+    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody UserRequest userRequest) {
+        return  userService.createUser(userRequest);
     }
 }
