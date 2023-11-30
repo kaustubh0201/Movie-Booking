@@ -1,4 +1,4 @@
-package com.project.moviebooking.utils;
+package com.project.moviebooking.util;
 
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,6 +99,19 @@ public class Utils {
                 .emailId(userRequest.getEmailId())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
                 .roles(List.of("ROLE_USER"))
+                .build();
+    }
+
+    public User userRequestToUserTransformer(UserRequest userRequest, String otp) {
+
+        return User.builder()
+                .name(userRequest.getName())
+                .username(userRequest.getUsername())
+                .emailId(userRequest.getEmailId())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .roles(List.of("ROLE_USER"))
+                .otp(otp)
+                .isVerified(false)
                 .build();
     }
 

@@ -6,7 +6,9 @@ import com.project.moviebooking.dto.UserRequest;
 import com.project.moviebooking.model.User;
 import com.project.moviebooking.repository.UserRepository;
 import com.project.moviebooking.service.UserService;
-import com.project.moviebooking.utils.Utils;
+import com.project.moviebooking.util.EmailSender;
+import com.project.moviebooking.util.OtpGenerator;
+import com.project.moviebooking.util.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -38,11 +40,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private Utils utils;
 
+    @Autowired
+    private OtpGenerator otpGenerator;
+
+    @Autowired
+    private EmailSender mailSender;
+
     @Override
     public ResponseEntity<AuthenticationResponse> createUser(UserRequest userRequest) {
 
         AuthenticationResponse authenticationResponse;
-        final User user = utils.userRequestToUserTransformer(userRequest);
+        String otp = otpGenerator.generateOTP();
+        final User user = utils.userRequestToUserTransformer(userRequest, otp);
 
         try {
             if (userRepository.findByUsername(user.getUsername()).isPresent()) {
@@ -50,10 +59,11 @@ public class UserServiceImpl implements UserService {
                         + " Please try forget password to recover the account");
             }
 
+            mailSender.sendOTP(user.getEmailId(), user.getOtp());
             userRepository.save(user);
 
             authenticationResponse = AuthenticationResponse.builder()
-                    .message("User has been successfully registered.")
+                    .message("User has been successfully registered and OTP has been sent for verification.")
                     .build();
 
             log.info("User added to the database with {}", user.getUserId());
@@ -72,6 +82,45 @@ public class UserServiceImpl implements UserService {
 
             log.error("Error occurred for username: {} {}", user.getUsername(), e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(authenticationResponse);
+        }
+    }
+
+    public ResponseEntity<AuthenticationResponse> verifyUser(String emailId, String otp) {
+        AuthenticationResponse response;
+
+        try {
+            User user = userRepository.findByEmailId(emailId).orElseThrow(() ->
+                    new UsernameNotFoundException("The given emailId is not found!"));
+
+            if (user.getOtp().equals(otp)) {
+                user.setVerified(true);
+                userRepository.save(user);
+
+                response = AuthenticationResponse.builder()
+                        .message("User has been verified successfully!")
+                        .build();
+
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            }
+
+            response = AuthenticationResponse.builder()
+                    .message("OTP doesn't match. Please try again!")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+        } catch (UsernameNotFoundException e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

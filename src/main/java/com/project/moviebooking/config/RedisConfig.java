@@ -31,11 +31,19 @@ public class RedisConfig {
     @Value("${spring.redis.ttl}")
     private int cacheTimeToLive;
 
+    @Value("${spring.redis.username}")
+    private String username;
+
+    @Value("${spring.redis.password}")
+    private String password;
+
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(Integer.parseInt(port));
+        redisStandaloneConfiguration.setUsername(username);
+        redisStandaloneConfiguration.setPassword(password);
 
         JedisClientConfigurationBuilder jedisClientConfiguration = JedisClientConfiguration.builder();
         jedisClientConfiguration.connectTimeout(Duration.ofSeconds(Integer.parseInt(timeout)));

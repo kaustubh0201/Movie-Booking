@@ -5,7 +5,7 @@ import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.model.Movie;
 import com.project.moviebooking.repository.MovieRepository;
 import com.project.moviebooking.service.MovieService;
-import com.project.moviebooking.utils.Utils;
+import com.project.moviebooking.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;

@@ -31,6 +31,8 @@ public class User implements UserDetails {
     private String password;
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+    private boolean isVerified;
+    private String otp;
 
 
     @Override
