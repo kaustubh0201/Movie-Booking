@@ -18,7 +18,7 @@ public class EmailSender {
         mailMessage.setSubject("Movie-Booking OTP Verification");
         mailMessage.setText("Hello!\n\n" +
                 "Thank you for signing up with Movie-Booking.\n" +
-                "Here's the OTP for your account verification: " + otp + "." + ""\n\n" +
+                "Here's the OTP for your account verification: " + otp + "." + "\n\n" +
                 "Regards, \nTeam Movie-Booking");
 
         javaMailSender.send(mailMessage);
