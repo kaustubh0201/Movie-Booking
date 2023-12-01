@@ -30,7 +30,7 @@ public class Utils {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private TheatreResponse theatreToTheatreResponseTransformer(Theatre theatre) {
+    public TheatreResponse theatreToTheatreResponseTransformer(Theatre theatre) {
 
         return TheatreResponse.builder()
                 .theatreId(theatre.getTheatreId())

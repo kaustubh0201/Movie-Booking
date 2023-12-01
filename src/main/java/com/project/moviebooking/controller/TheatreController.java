@@ -5,7 +5,10 @@ import com.project.moviebooking.dto.TheatreResponse;
 import com.project.moviebooking.service.impl.TheatreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +18,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/theatre")
-@RequiredArgsConstructor
 public class TheatreController {
 
     @Autowired
@@ -31,17 +34,22 @@ public class TheatreController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/city")
-    public List<TheatreResponse> getTheatreByTheatreCity(@RequestParam String theatreCity) {
-        return theatreService.getAllTheatreByTheatreCity(theatreCity);
+    public ResponseEntity<List<TheatreResponse>> getTheatreByTheatreCity(@RequestParam String theatreCity,
+                                                                         @RequestParam (defaultValue = "0") int page,
+                                                                         @RequestParam (defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(theatreService.getAllTheatreByTheatreCity(theatreCity, pageable).getContent());
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/city-and-name")
-    public List<TheatreResponse> getTheatreByTheatreCityAndTheatreName(@RequestParam String theatreCity,
-                                                                       @RequestParam String theatreName) {
-        return theatreService.getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName);
+    public ResponseEntity<List<TheatreResponse>> getTheatreByTheatreCityAndTheatreName(@RequestParam String theatreCity,
+                                                                       @RequestParam String theatreName,
+                                                                       @RequestParam (defaultValue = "0") int page,
+                                                                       @RequestParam (defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.of(Optional.of(theatreService
+                .getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName, pageable).getContent()));
     }
 }

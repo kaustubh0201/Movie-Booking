@@ -9,6 +9,8 @@ import com.project.moviebooking.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -36,6 +38,15 @@ public class TheatreServiceImpl implements TheatreService {
     }
 
     @Override
+    @Cacheable(value = "theatreCache",
+            key = "#theatreCity + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
+    public Page<TheatreResponse> getAllTheatreByTheatreCity(String theatreCity, Pageable pageable) {
+
+        return theatreRepository.findByTheatreCity(theatreCity, pageable)
+                .map(utils::theatreToTheatreResponseTransformer);
+    }
+
+    @Override
     @Cacheable(value = "theatreCache", key = "#theatreCity")
     public List<TheatreResponse> getAllTheatreByTheatreCity(String theatreCity) {
 
@@ -43,6 +54,15 @@ public class TheatreServiceImpl implements TheatreService {
 
         return (theatres.isPresent())
                 ? utils.listTheatreToListTheatreResponseTransformer(theatres.get()) : Collections.emptyList();
+    }
+
+    @Override
+    @Cacheable(value = "theatreCache",
+            key = "#theatreCity + '_' + #theatreName + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
+    public Page<TheatreResponse> getAllTheatreByTheatreCityAndTheatreName(String theatreCity, String theatreName,
+                                                                          Pageable pageable) {
+        return theatreRepository.findByTheatreCityAndTheatreName(theatreCity, theatreName, pageable)
+                .map(utils::theatreToTheatreResponseTransformer);
     }
 
     @Override
@@ -63,7 +83,5 @@ public class TheatreServiceImpl implements TheatreService {
 
         return theatre.map(value -> utils.theatreResponseToTheatreTransformer(value))
                 .orElse(null);
-
     }
-
 }
