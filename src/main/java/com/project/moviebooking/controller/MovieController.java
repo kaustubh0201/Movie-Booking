@@ -4,7 +4,6 @@ import com.project.moviebooking.dto.MovieRequest;
 import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.service.impl.MovieServiceImpl;
 import com.project.moviebooking.util.Utils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -33,30 +32,46 @@ public class MovieController {
     private Utils utils;
 
     @PostMapping
-    public ResponseEntity<MovieResponse> createMovie(@RequestBody MovieRequest movieRequest) {
+    public ResponseEntity<Map<String, Object>> createMovie(@RequestBody MovieRequest movieRequest) {
+
+        Map<String, Object> response = new HashMap<>();
 
         if (!utils.isAdmin()) {
-            log.error("Unauthorized user access for creating movies.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MovieResponse.builder().build());
+            log.error("Unauthorized user access for creating movie with movieName: {}", movieRequest.getMovieName());
+            response.put("errorMessage", "New movies can only be created by admins.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         try {
             MovieResponse movieResponse = movieService.createMovie(movieRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(movieResponse);
+            response.put("movieResponse", movieResponse);
+            response.put("message", "Movie has been successfully created!");
+            log.info("Movie created successfully with movieId: {} and movieName: {}",
+                    movieResponse.getMovieId(), movieResponse.getMovieName());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MovieResponse.builder().build());
+            response.put("errorMessage", e.getMessage());
+            log.error("Error while creating movie with movieName: {} with error: {}",
+                    movieRequest.getMovieName(), e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<MovieResponse>> getMovieByMovieName(@RequestParam String movieName,
+    public ResponseEntity<Map<String, Object>> getMovieByMovieName(@RequestParam String movieName,
                                                    @RequestParam (defaultValue = "0") int page,
                                                    @RequestParam (defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
+        Map<String, Object> response = new HashMap<>();
 
         try {
-            return ResponseEntity.ok(movieService.getAllMovieByMovieName(movieName, pageable));
+            response.put("movieList", movieService.getAllMovieByMovieName(movieName, pageable));
+            response.put("message", "Successfully got all the movies!");
+            log.info("Fetched movies with movieName: {}, page: {} and size: {}", movieName, page, size);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            response.put("errorMessage", e.getMessage());
+            log.error("Error while fetching movies with movieName: {} with error: {}", movieName, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

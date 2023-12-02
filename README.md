@@ -1,7 +1,7 @@
 <!-- ABOUT THE PROJECT -->
 # Movie Booking Service
 
-REST APIs to get different movies in various cities made using Spring Boot framework, Mongo Database, and Redis Cache.JSON Web Token have been used for authentication and authorization.
+REST APIs to get different movies in various cities made using Spring Boot framework, Mongo Database, and Redis Cache. JSON Web Token have been used for authentication and authorization.
 
 <hr>
 

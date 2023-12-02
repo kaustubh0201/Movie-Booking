@@ -1,7 +1,6 @@
 package com.project.moviebooking.controller;
 
 import com.project.moviebooking.dto.ShowRequest;
-import com.project.moviebooking.dto.ShowResponse;
 import com.project.moviebooking.model.Show;
 import com.project.moviebooking.service.impl.ShowServiceImpl;
 import com.project.moviebooking.util.Utils;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -31,39 +30,64 @@ public class ShowController {
     private Utils utils;
 
     @PostMapping
-    public ResponseEntity<Show> createShow(@RequestBody ShowRequest showRequest) {
+    public ResponseEntity<Map<String, Object>> createShow(@RequestBody ShowRequest showRequest) {
+
+        Map<String, Object> response = new HashMap<>();
 
         if (!utils.isAdmin()) {
-            log.error("Unauthorized user access for creating shows.");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Show.builder().build());
+            log.error("Unauthorized user access for creating show with movieId: {} and theatreId: {}",
+                    showRequest.getMovieId(), showRequest.getTheatreId());
+            response.put("errorMessage", "Shows can only be created by admins.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         try {
             Show show = showService.createShow(showRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(show);
+            response.put("show", show);
+            response.put("message", "Successfully created show!");
+            log.info("Show successfully created with showId: {}", show.getShowId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Show.builder().build());
+            response.put("errorMessage", e.getMessage());
+            log.error("Error while creating show with movieId: {}, theatreId: {} and error: {}",
+                    showRequest.getMovieId(), showRequest.getTheatreId(), e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     @GetMapping
     @RequestMapping("/movie")
-    public ResponseEntity<List<ShowResponse>> getAllShowsByMovie(@RequestParam String movieName) {
+    public ResponseEntity<Map<String, Object>> getAllShowsByMovie(@RequestParam String movieName) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            return ResponseEntity.ok(showService.getAllShowsByMovie(movieName));
+            response.put("showList", showService.getAllShowsByMovie(movieName));
+            response.put("message", "Successfully fetched all the movies!");
+            log.info("Successfully fetched all shows with movieName: {}", movieName);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            response.put("errorMessage", e.getMessage());
+            log.error("Error while fetching shows with movieName: {} and error: {}", movieName, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     @GetMapping
     @RequestMapping("/movie-and-city")
-    public ResponseEntity<List<ShowResponse>> getAllShowsByMovieAndCity(@RequestParam String movieName,
+    public ResponseEntity<Map<String, Object>> getAllShowsByMovieAndCity(@RequestParam String movieName,
                                                         @RequestParam String cityName) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            return ResponseEntity.ok(showService.getAllShowByMovieAndCity(movieName, cityName));
+            response.put("showList", showService.getAllShowByMovieAndCity(movieName, cityName));
+            response.put("message", "Successfully fetched all the movies!");
+            log.info("Successfully fetched all shows with movieName: {} and cityName: {}", movieName, cityName);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            response.put("errorMessage", e.getMessage());
+            log.error("Error while fetching shows with movieName: {}, cityName: {} and error: {}",
+                    movieName, cityName, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
