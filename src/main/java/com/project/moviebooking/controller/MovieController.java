@@ -3,7 +3,9 @@ package com.project.moviebooking.controller;
 import com.project.moviebooking.dto.MovieRequest;
 import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.service.impl.MovieServiceImpl;
+import com.project.moviebooking.util.Utils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,15 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/movie")
-@RequiredArgsConstructor
 public class MovieController {
 
     @Autowired
     private MovieServiceImpl movieService;
 
+    @Autowired
+    private Utils utils;
+
     @PostMapping
     public ResponseEntity<MovieResponse> createMovie(@RequestBody MovieRequest movieRequest) {
+
+        if (!utils.isAdmin()) {
+            log.error("Unauthorized user access for creating movies.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MovieResponse.builder().build());
+        }
+
         MovieResponse movieResponse = movieService.createMovie(movieRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(movieResponse);
     }

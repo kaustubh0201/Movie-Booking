@@ -1,5 +1,6 @@
 package com.project.moviebooking.util;
 
+import com.project.moviebooking.constant.Constants;
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.dto.MovieRequest;
@@ -15,6 +16,10 @@ import com.project.moviebooking.model.Show;
 import com.project.moviebooking.model.Theatre;
 import com.project.moviebooking.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -173,4 +178,24 @@ public class Utils {
 
     }
 
+    public boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getAuthorities() != null) {
+
+            return authentication.getAuthorities().stream()
+                    .anyMatch(authority -> new SimpleGrantedAuthority("ROLE_ADMIN").equals(authority));
+        }
+
+        return false;
+    }
+
+    public String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() != null) {
+            return ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        return Constants.EMPTY_STRING;
+    }
 }
