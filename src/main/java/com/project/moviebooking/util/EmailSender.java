@@ -23,4 +23,16 @@ public class EmailSender {
 
         javaMailSender.send(mailMessage);
     }
+
+    public void sendForgetPasswordOTP(String email, String otp) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+        mailMessage.setText(email);
+        mailMessage.setSubject("Forget Password OTP Verification");
+        mailMessage.setText("Hello!\n\n" +
+                "Here's the OTP for forget password: " + otp + "." + "\n\n" +
+                "Regards, \nTeam Movie-Booking");
+
+        javaMailSender.send(mailMessage);
+    }
 }

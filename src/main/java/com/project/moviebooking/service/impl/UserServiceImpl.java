@@ -221,4 +221,76 @@ public class UserServiceImpl implements UserService {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(authenticationResponse);
     }
+
+    public ResponseEntity<AuthenticationResponse> forgotPassword(String emailId) {
+        AuthenticationResponse response;
+
+        try {
+            User user = userRepository.findByEmailId(emailId).orElseThrow(() ->
+                    new UsernameNotFoundException("The given emailId is not found!"));
+
+            String otp = otpGenerator.generateOTP();
+            user.setOtp(otp);
+            mailSender.sendForgetPasswordOTP(user.getEmailId(), otp);
+            userRepository.save(user);
+
+            response = AuthenticationResponse.builder()
+                    .message("OTP has been sent to the emailId for password change.")
+                    .build();
+
+            log.info("Forget Password OTP has been sent for emailId: {}", user.getEmailId());
+            return ResponseEntity.ok(response);
+        } catch (UsernameNotFoundException e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    public ResponseEntity<AuthenticationResponse> verifyForgetPassword(String emailId, String otp, String password) {
+        AuthenticationResponse response;
+
+        try {
+            User user = userRepository.findByEmailId(emailId).orElseThrow(() ->
+                    new UsernameNotFoundException("The given emailId is not found!"));
+
+            if (user.getOtp().equals(otp)) {
+                user.setPassword(utils.encodePassword(password));
+                userRepository.save(user);
+
+                response = AuthenticationResponse.builder()
+                        .message("Password has been changed successfully!")
+                        .build();
+
+                return ResponseEntity.ok(response);
+            }
+
+            response = AuthenticationResponse.builder()
+                    .message("OTP doesn't match. Password has not been changed.")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+        } catch (UsernameNotFoundException e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

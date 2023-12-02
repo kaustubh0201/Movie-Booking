@@ -43,4 +43,16 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         return userService.refreshToken(request, response);
     }
+
+    @PatchMapping("/forget-password")
+    public ResponseEntity<AuthenticationResponse> forgetPassword(@RequestParam String emailId) {
+        return userService.forgotPassword(emailId);
+    }
+
+    @PatchMapping("/forget-password-verify")
+    public ResponseEntity<AuthenticationResponse> verifyOtpForgetPassword(@RequestParam String emailId,
+                                                                          @RequestParam String otp,
+                                                                          @RequestParam String password) {
+        return userService.verifyForgetPassword(emailId, otp, password);
+    }
 }

@@ -198,4 +198,8 @@ public class Utils {
         }
         return Constants.EMPTY_STRING;
     }
+
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 }
