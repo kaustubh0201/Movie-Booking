@@ -9,6 +9,8 @@ import com.project.moviebooking.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -30,11 +32,13 @@ public class BookingServiceImpl implements BookingService {
     private Utils utils;
 
     @Override
-    public void createBooking(BookingRequest bookingRequest) {
+    public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = utils.bookingRequestToBooking(bookingRequest);
 
-        bookingRepository.save(booking);
+        booking = bookingRepository.save(booking);
         log.info("Booking added to the database with {}", booking.getBookingId());
+
+        return booking;
     }
 
     @Override
@@ -50,5 +54,17 @@ public class BookingServiceImpl implements BookingService {
                         .collect(Collectors.toList())
                 )
                 .orElse(Collections.emptyList());
+    }
+
+    @Override
+    @Cacheable(value = "bookingCache",
+            key = "#username + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
+    public List<BookingResponse> getAllBookingsByUsername(String username, Pageable pageable) {
+        List<Booking> bookings = bookingRepository.findByUsername(username, pageable).getContent();
+
+        return bookings.stream().map(booking -> utils.bookingToBookingResponseTransformer(
+                booking,
+                showService.getShowByShowId(booking.getShowId())
+        )).collect(Collectors.toList());
     }
 }

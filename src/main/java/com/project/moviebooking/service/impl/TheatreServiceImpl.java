@@ -8,8 +8,7 @@ import com.project.moviebooking.service.TheatreService;
 import com.project.moviebooking.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
+import org.springframework.cache.annotation.Cacheable;;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,22 +27,23 @@ public class TheatreServiceImpl implements TheatreService {
     private Utils utils;
 
     @Override
-    public void createTheatre(TheatreRequest theatreRequest) {
+    public TheatreResponse createTheatre(TheatreRequest theatreRequest) {
 
         Theatre theatre = utils.theatreRequestToTheatreTransformer(theatreRequest);
 
-        theatreRepository.save(theatre);
+        theatre = theatreRepository.save(theatre);
         log.info("Theatre added to the database with {}", theatre.getTheatreId());
 
+        return utils.theatreToTheatreResponseTransformer(theatre);
     }
 
     @Override
     @Cacheable(value = "theatreCache",
             key = "#theatreCity + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
-    public Page<TheatreResponse> getAllTheatreByTheatreCity(String theatreCity, Pageable pageable) {
+    public List<TheatreResponse> getAllTheatreByTheatreCity(String theatreCity, Pageable pageable) {
 
         return theatreRepository.findByTheatreCity(theatreCity, pageable)
-                .map(utils::theatreToTheatreResponseTransformer);
+                .map(utils::theatreToTheatreResponseTransformer).getContent();
     }
 
     @Override
@@ -59,10 +59,10 @@ public class TheatreServiceImpl implements TheatreService {
     @Override
     @Cacheable(value = "theatreCache",
             key = "#theatreCity + '_' + #theatreName + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
-    public Page<TheatreResponse> getAllTheatreByTheatreCityAndTheatreName(String theatreCity, String theatreName,
+    public List<TheatreResponse> getAllTheatreByTheatreCityAndTheatreName(String theatreCity, String theatreName,
                                                                           Pageable pageable) {
         return theatreRepository.findByTheatreCityAndTheatreName(theatreCity, theatreName, pageable)
-                .map(utils::theatreToTheatreResponseTransformer);
+                .map(utils::theatreToTheatreResponseTransformer).getContent();
     }
 
     @Override

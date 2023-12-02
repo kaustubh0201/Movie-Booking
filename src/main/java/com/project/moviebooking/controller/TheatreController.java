@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,9 +27,9 @@ public class TheatreController {
     private TheatreServiceImpl theatreService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createTheatre(@RequestBody TheatreRequest theatreRequest) {
-        theatreService.createTheatre(theatreRequest);
+    public ResponseEntity<TheatreResponse> createTheatre(@RequestBody TheatreRequest theatreRequest) {
+        TheatreResponse theatreResponse = theatreService.createTheatre(theatreRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(theatreResponse);
     }
 
     @GetMapping
@@ -39,7 +38,7 @@ public class TheatreController {
                                                                          @RequestParam (defaultValue = "0") int page,
                                                                          @RequestParam (defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(theatreService.getAllTheatreByTheatreCity(theatreCity, pageable).getContent());
+        return ResponseEntity.ok(theatreService.getAllTheatreByTheatreCity(theatreCity, pageable));
     }
 
     @GetMapping
@@ -50,6 +49,6 @@ public class TheatreController {
                                                                        @RequestParam (defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.of(Optional.of(theatreService
-                .getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName, pageable).getContent()));
+                .getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName, pageable)));
     }
 }

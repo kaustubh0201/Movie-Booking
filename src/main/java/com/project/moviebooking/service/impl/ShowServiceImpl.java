@@ -35,13 +35,14 @@ public class ShowServiceImpl implements ShowService {
     private Utils utils;
 
     @Override
-    public void createShow(ShowRequest showRequest) {
+    public Show createShow(ShowRequest showRequest) {
 
         Show show = utils.showRequestToShowTransformer(showRequest);
 
-        showRepository.save(show);
+        show = showRepository.save(show);
         log.info("Show added to the database with {}", show.getShowId());
 
+        return show;
     }
 
     @Override

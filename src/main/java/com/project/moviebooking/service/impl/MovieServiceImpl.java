@@ -9,6 +9,7 @@ import com.project.moviebooking.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -26,12 +27,22 @@ public class MovieServiceImpl implements MovieService {
     private Utils utils;
 
     @Override
-    public void createMovie(MovieRequest movieRequest) {
+    public MovieResponse createMovie(MovieRequest movieRequest) {
 
         Movie movie = utils.movieRequestToMovieTransformer(movieRequest);
 
-        movieRepository.save(movie);
+        movie = movieRepository.save(movie);
         log.info("Movie added to the database with {}", movie.getMovieId());
+
+        return utils.movieToMovieResponseTransformer(movie);
+    }
+
+    @Override
+    @Cacheable(value = "movieCache", key = "#movieName + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")
+    public List<MovieResponse> getAllMovieByMovieName(String movieName, Pageable pageable) {
+
+        return movieRepository.findByMovieName(movieName, pageable)
+                .map(utils::movieToMovieResponseTransformer).getContent();
     }
 
     @Override
@@ -52,9 +63,8 @@ public class MovieServiceImpl implements MovieService {
         Optional<Movie> movie = movieRepository.findById(movieId);
 
         return movie.map(value ->
-                utils.movieToMovieResponse(value))
+                utils.movieToMovieResponseTransformer(value))
                 .orElse(null);
 
     }
-
 }

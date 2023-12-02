@@ -50,7 +50,7 @@ public class Utils {
 
     }
 
-    private MovieResponse movieToMovieResponseTransformer(Movie movie) {
+    public MovieResponse movieToMovieResponseTransformer(Movie movie) {
 
         return MovieResponse.builder()
                 .movieId(movie.getMovieId())
@@ -79,7 +79,6 @@ public class Utils {
                 .auditorium(show.getAuditorium())
                 .showTime(show.getShowTime())
                 .build();
-
     }
 
     public BookingResponse bookingToBookingResponseTransformer(Booking booking, ShowResponse showResponse) {
@@ -147,17 +146,6 @@ public class Utils {
                 .theatreId(showRequest.getTheatreId())
                 .auditorium(showRequest.getAuditorium())
                 .showTime(showRequest.getShowTime())
-                .build();
-
-    }
-
-    public MovieResponse movieToMovieResponse(Movie movie) {
-
-        return MovieResponse.builder()
-                .movieId(movie.getMovieId())
-                .movieName(movie.getMovieName())
-                .releaseDate(movie.getReleaseDate())
-                .movieDuration(movie.getMovieDuration())
                 .build();
 
     }
