@@ -3,6 +3,7 @@ package com.project.moviebooking.controller;
 import com.project.moviebooking.constant.Constants;
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
+import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.service.impl.BookingServiceImpl;
 import com.project.moviebooking.util.Utils;
@@ -40,7 +41,12 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody @NotNull BookingRequest bookingRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.createBooking(bookingRequest));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.createBooking(bookingRequest));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Booking.builder().build());
+        }
+
     }
 
     @GetMapping
@@ -54,7 +60,11 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
         }
 
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(bookingService.getAllBookingsByUsername(username, pageable));
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            return ResponseEntity.ok(bookingService.getAllBookingsByUsername(username, pageable));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
 }

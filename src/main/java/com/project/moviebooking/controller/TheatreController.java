@@ -44,8 +44,12 @@ public class TheatreController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(TheatreResponse.builder().build());
         }
 
-        TheatreResponse theatreResponse = theatreService.createTheatre(theatreRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(theatreResponse);
+        try {
+            TheatreResponse theatreResponse = theatreService.createTheatre(theatreRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(theatreResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(TheatreResponse.builder().build());
+        }
     }
 
     @GetMapping
@@ -54,7 +58,12 @@ public class TheatreController {
                                                                          @RequestParam (defaultValue = "0") int page,
                                                                          @RequestParam (defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(theatreService.getAllTheatreByTheatreCity(theatreCity, pageable));
+
+        try {
+            return ResponseEntity.ok(theatreService.getAllTheatreByTheatreCity(theatreCity, pageable));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
 
     @GetMapping
@@ -64,7 +73,13 @@ public class TheatreController {
                                                                        @RequestParam (defaultValue = "0") int page,
                                                                        @RequestParam (defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.of(Optional.of(theatreService
-                .getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName, pageable)));
+
+        try {
+            return ResponseEntity.of(Optional.of(theatreService
+                    .getAllTheatreByTheatreCityAndTheatreName(theatreCity, theatreName, pageable)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+
     }
 }

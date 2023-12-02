@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -37,21 +38,32 @@ public class ShowController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Show.builder().build());
         }
 
-        Show show = showService.createShow(showRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(show);
+        try {
+            Show show = showService.createShow(showRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(show);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Show.builder().build());
+        }
     }
 
     @GetMapping
     @RequestMapping("/movie")
     public ResponseEntity<List<ShowResponse>> getAllShowsByMovie(@RequestParam String movieName) {
-        return ResponseEntity.ok(showService.getAllShowsByMovie(movieName));
+        try {
+            return ResponseEntity.ok(showService.getAllShowsByMovie(movieName));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
 
     @GetMapping
     @RequestMapping("/movie-and-city")
     public ResponseEntity<List<ShowResponse>> getAllShowsByMovieAndCity(@RequestParam String movieName,
                                                         @RequestParam String cityName) {
-        return ResponseEntity.ok(showService.getAllShowByMovieAndCity(movieName, cityName));
+        try {
+            return ResponseEntity.ok(showService.getAllShowByMovieAndCity(movieName, cityName));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
-
 }

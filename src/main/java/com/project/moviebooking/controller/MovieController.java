@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -38,9 +39,12 @@ public class MovieController {
             log.error("Unauthorized user access for creating movies.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MovieResponse.builder().build());
         }
-
-        MovieResponse movieResponse = movieService.createMovie(movieRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(movieResponse);
+        try {
+            MovieResponse movieResponse = movieService.createMovie(movieRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(movieResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MovieResponse.builder().build());
+        }
     }
 
     @GetMapping
@@ -48,6 +52,11 @@ public class MovieController {
                                                    @RequestParam (defaultValue = "0") int page,
                                                    @RequestParam (defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(movieService.getAllMovieByMovieName(movieName, pageable));
+
+        try {
+            return ResponseEntity.ok(movieService.getAllMovieByMovieName(movieName, pageable));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
 }
