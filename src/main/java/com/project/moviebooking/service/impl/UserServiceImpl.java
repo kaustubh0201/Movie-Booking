@@ -85,12 +85,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public ResponseEntity<AuthenticationResponse> verifyUser(String emailId, String otp) {
         AuthenticationResponse response;
 
         try {
             User user = userRepository.findByEmailId(emailId).orElseThrow(() ->
-                    new UsernameNotFoundException("The given emailId is not found!"));
+                    new UsernameNotFoundException("The given emailId was not found!"));
 
             if (user.getOtp().equals(otp)) {
                 user.setVerified(true);
@@ -222,6 +223,7 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(authenticationResponse);
     }
 
+    @Override
     public ResponseEntity<AuthenticationResponse> forgotPassword(String emailId) {
         AuthenticationResponse response;
 
@@ -255,6 +257,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public ResponseEntity<AuthenticationResponse> verifyForgetPassword(String emailId, String otp, String password) {
         AuthenticationResponse response;
 
@@ -279,6 +282,41 @@ public class UserServiceImpl implements UserService {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 
+        } catch (UsernameNotFoundException e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response = AuthenticationResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @Override
+    public ResponseEntity<AuthenticationResponse> sendOtpAgain(String emailId) {
+
+        AuthenticationResponse response;
+
+        try {
+            User user = userRepository.findByEmailId(emailId).orElseThrow(() ->
+                    new UsernameNotFoundException("The given emailId was not found!"));
+
+            String otp = otpGenerator.generateOTP();
+            user.setOtp(otp);
+            mailSender.sendOTP(user.getEmailId(), otp);
+            userRepository.save(user);
+
+            response = AuthenticationResponse.builder()
+                    .message("OTP has been sent for verification again!")
+                    .build();
+
+            log.info("OTP has been sent for verification again for user: {}", user.getUsername());
+            return ResponseEntity.ok(response);
         } catch (UsernameNotFoundException e) {
             response = AuthenticationResponse.builder()
                     .message(e.getMessage())

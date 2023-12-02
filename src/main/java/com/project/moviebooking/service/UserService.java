@@ -11,5 +11,9 @@ public interface UserService {
 
     ResponseEntity<AuthenticationResponse> createUser(UserRequest userRequest);
     ResponseEntity<AuthenticationResponse> login(AuthenticationRequest request);
+    ResponseEntity<AuthenticationResponse> verifyUser(String emailId, String otp);
     ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response);
+    ResponseEntity<AuthenticationResponse> forgotPassword(String emailId);
+    ResponseEntity<AuthenticationResponse> verifyForgetPassword(String emailId, String otp, String password);
+    ResponseEntity<AuthenticationResponse> sendOtpAgain(String emailId);
 }

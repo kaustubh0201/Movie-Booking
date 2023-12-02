@@ -55,4 +55,9 @@ public class AuthController {
                                                                           @RequestParam String password) {
         return userService.verifyForgetPassword(emailId, otp, password);
     }
+
+    @PatchMapping("/resend-otp")
+    public ResponseEntity<AuthenticationResponse> resendOTP(@RequestParam String emailId) {
+        return userService.sendOtpAgain(emailId);
+    }
 }
