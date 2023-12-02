@@ -4,6 +4,8 @@ import com.project.moviebooking.constant.Constants;
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.dto.MovieResponse;
+import com.project.moviebooking.exception.BookedSeatsNotFoundException;
+import com.project.moviebooking.exception.BookedSeatsOverlap;
 import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.service.impl.BookingServiceImpl;
 import com.project.moviebooking.util.Utils;
@@ -26,7 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @Slf4j
@@ -40,13 +45,20 @@ public class BookingController {
     private Utils utils;
 
     @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestBody @NotNull BookingRequest bookingRequest) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.createBooking(bookingRequest));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Booking.builder().build());
-        }
+    public ResponseEntity<Map<String, Object>> createBooking(@RequestBody @NotNull BookingRequest bookingRequest) {
+        Map<String, Object> response = new HashMap<>();
 
+        try {
+            response.put("booking", bookingService.createBooking(bookingRequest));
+            response.put("message", "Booking done successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (BookedSeatsNotFoundException | BookedSeatsOverlap e) {
+            response.put("errorMessage", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response.put("errorMessage", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping

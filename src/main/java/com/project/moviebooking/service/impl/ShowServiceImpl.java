@@ -4,7 +4,9 @@ import com.project.moviebooking.dto.MovieResponse;
 import com.project.moviebooking.dto.ShowRequest;
 import com.project.moviebooking.dto.ShowResponse;
 import com.project.moviebooking.dto.TheatreResponse;
+import com.project.moviebooking.model.BookedSeats;
 import com.project.moviebooking.model.Show;
+import com.project.moviebooking.repository.BookedSeatsRepository;
 import com.project.moviebooking.repository.ShowRepository;
 import com.project.moviebooking.service.ShowService;
 import com.project.moviebooking.util.Utils;
@@ -32,16 +34,23 @@ public class ShowServiceImpl implements ShowService {
     private TheatreServiceImpl theatreService;
 
     @Autowired
+    private BookedSeatsRepository bookedSeatsRepository;
+
+    @Autowired
     private Utils utils;
 
     @Override
     public Show createShow(ShowRequest showRequest) {
 
         Show show = utils.showRequestToShowTransformer(showRequest);
-
         show = showRepository.save(show);
-        log.info("Show added to the database with {}", show.getShowId());
 
+        bookedSeatsRepository.save(BookedSeats.builder()
+                        .showId(show.getShowId())
+                        .allBookedSeats(Collections.emptyList())
+                .build());
+
+        log.info("Show added to the database with {}", show.getShowId());
         return show;
     }
 

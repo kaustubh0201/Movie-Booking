@@ -2,7 +2,11 @@ package com.project.moviebooking.service.impl;
 
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
+import com.project.moviebooking.exception.BookedSeatsNotFoundException;
+import com.project.moviebooking.exception.BookedSeatsOverlap;
+import com.project.moviebooking.model.BookedSeats;
 import com.project.moviebooking.model.Booking;
+import com.project.moviebooking.repository.BookedSeatsRepository;
 import com.project.moviebooking.repository.BookingRepository;
 import com.project.moviebooking.service.BookingService;
 import com.project.moviebooking.util.Utils;
@@ -26,14 +30,32 @@ public class BookingServiceImpl implements BookingService {
     private BookingRepository bookingRepository;
 
     @Autowired
+    private BookedSeatsRepository bookedSeatsRepository;
+
+    @Autowired
     private ShowServiceImpl showService;
 
     @Autowired
     private Utils utils;
 
     @Override
-    public Booking createBooking(BookingRequest bookingRequest) {
+    public Booking createBooking(BookingRequest bookingRequest)
+            throws BookedSeatsNotFoundException, BookedSeatsOverlap {
         Booking booking = utils.bookingRequestToBooking(bookingRequest);
+
+        BookedSeats bookedSeats = bookedSeatsRepository.findById(booking.getShowId()).orElseThrow(() ->
+                new BookedSeatsNotFoundException("No booked seats entity found for showId: " +
+                        bookingRequest.getShowId()));
+
+        boolean hasCommon = bookedSeats.getAllBookedSeats().stream()
+                .anyMatch(bookingRequest.getBookedSeats()::contains);
+
+        if (hasCommon) {
+            throw new BookedSeatsOverlap("Seats trying to book are already booked!");
+        }
+
+        bookedSeats.getAllBookedSeats().addAll(bookingRequest.getBookedSeats());
+        bookedSeatsRepository.save(bookedSeats);
 
         booking = bookingRepository.save(booking);
         log.info("Booking added to the database with {}", booking.getBookingId());

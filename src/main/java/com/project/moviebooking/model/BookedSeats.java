@@ -9,17 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("booking")
+@Document("booked_seats")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Booking {
+public class BookedSeats {
 
     @Id
-    private String bookingId;
     private String showId;
-    private String username;
-    private List<Integer> bookedSeats;
-
+    private List<Integer> allBookedSeats;
 }

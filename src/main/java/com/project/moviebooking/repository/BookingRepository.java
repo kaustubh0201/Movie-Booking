@@ -12,5 +12,4 @@ public interface BookingRepository extends MongoRepository<Booking, String> {
 
     Optional<List<Booking>> findByUsername(String username);
     Page<Booking> findByUsername(String username, Pageable pageable);
-
 }
