@@ -17,24 +17,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
+/**
+ * This is a controller class for the creation of theatres.
+ * The API requests for theatre are declared here.
+ * The methods to create a theatre and other related activities are present here.
+ */
 @RestController
 @Slf4j
 @RequestMapping("/api/theatre")
 public class TheatreController {
 
+    /**
+     * This object is for accessing the functions of the theater service layer.
+     */
     @Autowired
     private TheatreServiceImpl theatreService;
 
+    /**
+     * This object is used for access the different utility functions present in the utility class.
+     */
     @Autowired
     private Utils utils;
 
+    /**
+     * This method is for the creation of theatre which can only be done by admins.
+     * @param theatreRequest Contains the information of the theatre that needs to be created.
+     * @return A created theatre body is returned if the theatre is created successfully along with message otherwise
+     * in the case of error only error message is returned.
+     */
     @PostMapping
     public ResponseEntity<Map<String, Object>> createTheatre(@RequestBody TheatreRequest theatreRequest) {
         Map<String, Object> response = new HashMap<>();
@@ -61,6 +74,14 @@ public class TheatreController {
         }
     }
 
+    /**
+     * This method is used to get the theatres by their respective city.
+     * @param theatreCity This is the name of the city of which we want all the theatres.
+     * @param page This is the page number for the pagination purpose.
+     * @param size This is the size of each page the pagination purpose.
+     * @return A list with all the theatre information is returned along with a message otherwise in the case of any error
+     * only the error message is returned.
+     */
     @GetMapping
     @RequestMapping("/city")
     public ResponseEntity<Map<String, Object>> getTheatreByTheatreCity(@RequestParam String theatreCity,
@@ -83,6 +104,15 @@ public class TheatreController {
         }
     }
 
+    /**
+     * This method is used to get the theatres by their respective city and name of the theatre.
+     * @param theatreCity This is the name of the city of which we want all the theatres.
+     * @param theatreName This is the name of the theatre.
+     * @param page This is the page number for the pagination purpose.
+     * @param size This is the size of each page the pagination purpose.
+     * @return A list with all the theatre information is returned along with a message otherwise in the case of any error
+     * only the error message is returned.
+     */
     @GetMapping
     @RequestMapping("/city-and-name")
     public ResponseEntity<Map<String, Object>> getTheatreByTheatreCityAndTheatreName(@RequestParam String theatreCity,

@@ -18,17 +18,34 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This is a controller class for the creation of shows.
+ * The API requests for show are declared here.
+ * The methods to create a show, get the shows using different parameters are present here.
+ */
 @RestController
 @Slf4j
 @RequestMapping("/api/show")
 public class ShowController {
 
+    /**
+     * This object is for accessing the functions of the show service layer.
+     */
     @Autowired
     private ShowServiceImpl showService;
 
+    /**
+     * This object is used for access the different utility functions present in the utility class.
+     */
     @Autowired
     private Utils utils;
 
+    /**
+     * This method is for the creation of show which can only be done by admins.
+     * @param showRequest Contains the information of the show that needs to be created.
+     * @return A created show body is returned if the theatre is created successfully along with message otherwise
+     * in the case of error only error message is returned.
+     */
     @PostMapping
     public ResponseEntity<Map<String, Object>> createShow(@RequestBody ShowRequest showRequest) {
 
@@ -55,6 +72,12 @@ public class ShowController {
         }
     }
 
+    /**
+     * This method is used to get the shows by movie.
+     * @param movieName This is the name of the movie of which we want all the shows.
+     * @return A list with all the show information is returned along with a message otherwise in the case of any error
+     * only the error message is returned.
+     */
     @GetMapping
     @RequestMapping("/movie")
     public ResponseEntity<Map<String, Object>> getAllShowsByMovie(@RequestParam String movieName) {
@@ -72,6 +95,13 @@ public class ShowController {
         }
     }
 
+    /**
+     * This method is used to get the show by the movie and respective city.
+     * @param movieName This is the name of the movie of which we want all the shows.
+     * @param cityName This is the name of the city.
+     * @return A list with all the show information is returned along with a message otherwise in the case of any error
+     * only the error message is returned.
+     */
     @GetMapping
     @RequestMapping("/movie-and-city")
     public ResponseEntity<Map<String, Object>> getAllShowsByMovieAndCity(@RequestParam String movieName,

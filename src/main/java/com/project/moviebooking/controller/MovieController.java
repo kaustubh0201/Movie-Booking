@@ -20,17 +20,34 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This is a controller class for the creation of movies.
+ * The API requests for movies are declared here.
+ * The method to create movies and get movies by different parameters are present here.
+ */
 @RestController
 @Slf4j
 @RequestMapping("/api/movie")
 public class MovieController {
 
+    /**
+     * This object is for accessing the functions of the movie service layer.
+     */
     @Autowired
     private MovieServiceImpl movieService;
 
+    /**
+     * This object is used for access the different utility functions present in the utility class.
+     */
     @Autowired
     private Utils utils;
 
+    /**
+     * This method is for the creation of movie which can only be done by admins.
+     * @param movieRequest Contains the information of the movie that needs to be created.
+     * @return A created movie body is returned if the movie is created successfully along with message otherwise
+     * in the case of error only error message is returned.
+     */
     @PostMapping
     public ResponseEntity<Map<String, Object>> createMovie(@RequestBody MovieRequest movieRequest) {
 
@@ -56,6 +73,14 @@ public class MovieController {
         }
     }
 
+    /**
+     * This method is used to get the movies by the name of the movie.
+     * @param movieName This is the name of the movie.
+     * @param page This is the page number for the pagination purpose.
+     * @param size This is the size of each page the pagination purpose.
+     * @return A list with all the movie information is returned along with a message otherwise in the case of any error
+     * only the error message is returned. A list is returned because there can be many movies with the exact same name.
+     */
     @GetMapping
     public ResponseEntity<Map<String, Object>> getMovieByMovieName(@RequestParam String movieName,
                                                    @RequestParam (defaultValue = "0") int page,
