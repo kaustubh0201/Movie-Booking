@@ -7,16 +7,39 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
+/**
+ * Data Transfer Object (DTO) representing a request to add a new theatre.
+ * Contains fields for the theatre name, mapping of auditorium numbers to seat counts,
+ * theatre address, city, and state.
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TheatreRequest {
 
+    /**
+     * Represents the name of the theatre being added.
+     */
     private String theatreName;
-    private Map<Integer, Integer> auditoriumNumberToNumberOfSeats;
-    private String theatreAddress;
-    private String theatreCity;
-    private String theatreState;
 
+    /**
+     * Represents a mapping of auditorium numbers to their respective seat counts in the theatre.
+     */
+    private Map<Integer, Integer> auditoriumNumberToNumberOfSeats;
+
+    /**
+     * Represents the address of the theatre.
+     */
+    private String theatreAddress;
+
+    /**
+     * Represents the city where the theatre is located.
+     */
+    private String theatreCity;
+
+    /**
+     * Represents the state where the theatre is located.
+     */
+    private String theatreState;
 }

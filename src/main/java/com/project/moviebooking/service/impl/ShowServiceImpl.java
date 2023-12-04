@@ -20,25 +20,34 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Service implementation for managing movie shows.
+ */
 @Service
 @Slf4j
 public class ShowServiceImpl implements ShowService {
 
     @Autowired
-    private ShowRepository showRepository;
+    private ShowRepository showRepository; // Repository handling Show entities.
 
     @Autowired
-    private MovieServiceImpl movieService;
+    private MovieServiceImpl movieService; // Service handling Movie entities.
 
     @Autowired
-    private TheatreServiceImpl theatreService;
+    private TheatreServiceImpl theatreService; // Service handling Theatre entities.
 
     @Autowired
-    private BookedSeatsRepository bookedSeatsRepository;
+    private BookedSeatsRepository bookedSeatsRepository; // Repository handling BookedSeats entities.
 
     @Autowired
-    private Utils utils;
+    private Utils utils; // Utility class for transformation and mapping operations.
 
+    /**
+     * Creates a new show based on the provided show request.
+     *
+     * @param showRequest The request containing show details.
+     * @return The created show.
+     */
     @Override
     public Show createShow(ShowRequest showRequest) {
 
@@ -54,6 +63,12 @@ public class ShowServiceImpl implements ShowService {
         return show;
     }
 
+    /**
+     * Retrieves all shows for a given movie.
+     *
+     * @param movieName The name of the movie to retrieve shows for.
+     * @return A list of shows for the specified movie.
+     */
     @Override
     @Cacheable(value = "showCache", key = "#movieName")
     public List<ShowResponse> getAllShowsByMovie(String movieName) {
@@ -70,6 +85,13 @@ public class ShowServiceImpl implements ShowService {
 
     }
 
+    /**
+     * Retrieves all shows for a given movie in a specific city.
+     *
+     * @param movieName The name of the movie to retrieve shows for.
+     * @param cityName  The name of the city where shows are being searched for.
+     * @return A list of shows for the specified movie in the given city.
+     */
     @Override
     @Cacheable(value = "showCache", key = "#movieName + '_' + #cityName")
     public List<ShowResponse> getAllShowByMovieAndCity(String movieName, String cityName) {
@@ -91,6 +113,12 @@ public class ShowServiceImpl implements ShowService {
                 ).distinct().collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a show by its unique ID.
+     *
+     * @param showId The unique ID of the show to retrieve.
+     * @return The show details with the given ID.
+     */
     @Override
     @Cacheable(value = "showCache", key = "#showId")
     public ShowResponse getShowByShowId(String showId) {

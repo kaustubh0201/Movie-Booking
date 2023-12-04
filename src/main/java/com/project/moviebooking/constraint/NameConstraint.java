@@ -10,6 +10,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Custom validation constraint for verifying the validity of a user's name.
+ * Checks if the provided string adheres to the specified name pattern and is not blank.
+ */
 @Documented
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD})
@@ -18,8 +22,16 @@ import java.lang.annotation.Target;
 @Pattern(regexp = "^[A-Za-z]+(?:\\s+[A-Za-z]+)*$")
 public @interface NameConstraint {
 
+    /**
+     * Defines the error message when the name validation fails.
+     */
     String message() default "Invalid name";
+    /**
+     * Groups related to validation. Unused in this constraint.
+     */
     Class<?>[] groups() default {};
+    /**
+     * Payload for validation. Unused in this constraint.
+     */
     Class<? extends Payload>[] payload() default {};
-
 }

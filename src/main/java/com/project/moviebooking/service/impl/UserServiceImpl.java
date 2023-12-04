@@ -24,28 +24,38 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service implementation for handling user-related operations like registration,
+ * authentication, password reset, and OTP verification.
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; // Repository for user data
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager; // Spring's authentication manager
 
     @Autowired
-    private JwtServiceImpl jwtService;
+    private JwtServiceImpl jwtService; // JWT token service
 
     @Autowired
-    private Utils utils;
+    private Utils utils; // Utility functions
 
     @Autowired
-    private OtpGenerator otpGenerator;
+    private OtpGenerator otpGenerator; // OTP generation utility
 
     @Autowired
-    private EmailSender mailSender;
+    private EmailSender mailSender; // Utility for sending emails
 
+    /**
+     * Creates a new user with the provided user details and sends an OTP for verification.
+     *
+     * @param userRequest The user details for registration
+     * @return ResponseEntity with authentication response or error messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> createUser(UserRequest userRequest) {
 
@@ -85,6 +95,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Verifies a user's email using the provided OTP.
+     *
+     * @param emailId The user's email ID for verification
+     * @param otp     The OTP sent to the user's email
+     * @return ResponseEntity with verification success or failure messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> verifyUser(String emailId, String otp) {
         AuthenticationResponse response;
@@ -125,6 +142,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Logs in a user with the provided credentials and generates access and refresh tokens.
+     *
+     * @param request The authentication request containing username and password
+     * @return ResponseEntity with authentication response or error messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest request) {
 
@@ -169,6 +192,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Generates a new access token using the refresh token for an authenticated user.
+     *
+     * @param request  The HTTP request object
+     * @param response The HTTP response object
+     * @return ResponseEntity with refreshed access token or error messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -223,6 +253,12 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(authenticationResponse);
     }
 
+    /**
+     * Initiates the password reset process by sending an OTP to the user's email.
+     *
+     * @param emailId The user's email ID for password reset
+     * @return ResponseEntity with success or error messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> forgotPassword(String emailId) {
         AuthenticationResponse response;
@@ -257,6 +293,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Verifies the provided OTP and changes the user's password if the OTP matches.
+     *
+     * @param emailId  The user's email ID for verification
+     * @param otp      The OTP sent for password change
+     * @param password The new password to be set
+     * @return ResponseEntity with success or error messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> verifyForgetPassword(String emailId, String otp, String password) {
         AuthenticationResponse response;
@@ -297,6 +341,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Resends an OTP for verification to the user's email.
+     *
+     * @param emailId The user's email ID for OTP resend
+     * @return ResponseEntity with success or error messages
+     */
     @Override
     public ResponseEntity<AuthenticationResponse> sendOtpAgain(String emailId) {
 

@@ -10,6 +10,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Custom validation constraint for verifying the validity of a user's username.
+ * Checks if the provided string adheres to the specified username pattern and is not blank.
+ */
 @Documented
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD})
@@ -18,8 +22,16 @@ import java.lang.annotation.Target;
 @Pattern(regexp = "^[a-z_]{5,30}$")
 public @interface UsernameConstraint {
 
+    /**
+     * Defines the error message when the username validation fails.
+     */
     String message() default "Invalid username";
+    /**
+     * Groups related to validation. Unused in this constraint.
+     */
     Class<?>[] groups() default {};
+    /**
+     * Payload for validation. Unused in this constraint.
+     */
     Class<? extends Payload>[] payload() default {};
-
 }

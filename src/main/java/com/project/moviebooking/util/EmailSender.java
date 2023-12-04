@@ -5,12 +5,24 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+/**
+ * Utility class to handle sending OTPs via email.
+ */
 @Component
 public class EmailSender {
 
+    /**
+     * JavaMailSender instance to send emails.
+     */
     @Autowired
     private JavaMailSender javaMailSender;
 
+    /**
+     * Sends an OTP to the provided email address for account verification.
+     *
+     * @param email The recipient's email address
+     * @param otp   The OTP to be sent
+     */
     public void sendOTP(String email, String otp) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
@@ -24,6 +36,12 @@ public class EmailSender {
         javaMailSender.send(mailMessage);
     }
 
+    /**
+     * Sends an OTP to the provided email address for password reset.
+     *
+     * @param email The recipient's email address
+     * @param otp   The OTP to be sent
+     */
     public void sendForgetPasswordOTP(String email, String otp) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 

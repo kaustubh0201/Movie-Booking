@@ -13,7 +13,6 @@ import com.project.moviebooking.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +21,33 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the BookingService interface, handling booking-related operations.
+ */
 @Service
 @Slf4j
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
-    private BookingRepository bookingRepository;
+    private BookingRepository bookingRepository; // Repository handling Booking entities.
 
     @Autowired
-    private BookedSeatsRepository bookedSeatsRepository;
+    private BookedSeatsRepository bookedSeatsRepository; // Repository handling BookedSeats entities.
 
     @Autowired
-    private ShowServiceImpl showService;
+    private ShowServiceImpl showService; // Service handling Show entities.
 
     @Autowired
-    private Utils utils;
+    private Utils utils; // Utility class for transformation and mapping operations.
 
+    /**
+     * Creates a new booking based on the provided booking request.
+     *
+     * @param bookingRequest The request containing details to create a booking.
+     * @return The created booking entity.
+     * @throws BookedSeatsNotFoundException If the booked seats entity is not found for the show ID.
+     * @throws BookedSeatsOverlap           If the seats being booked are already booked.
+     */
     @Override
     public Booking createBooking(BookingRequest bookingRequest)
             throws BookedSeatsNotFoundException, BookedSeatsOverlap {
@@ -63,6 +73,12 @@ public class BookingServiceImpl implements BookingService {
         return booking;
     }
 
+    /**
+     * Retrieves all bookings for a specific username.
+     *
+     * @param username The username for which bookings are to be retrieved.
+     * @return A list of booking responses associated with the provided username.
+     */
     @Override
     @Cacheable(value = "bookingCache", key = "#username")
     public List<BookingResponse> getAllBookingsByUsername(String username) {
@@ -78,6 +94,13 @@ public class BookingServiceImpl implements BookingService {
                 .orElse(Collections.emptyList());
     }
 
+    /**
+     * Retrieves all bookings for a specific username with pagination.
+     *
+     * @param username The username for which bookings are to be retrieved.
+     * @param pageable The pagination information.
+     * @return A list of paginated booking responses associated with the provided username.
+     */
     @Override
     @Cacheable(value = "bookingCache",
             key = "#username + '_' + #pageable.getPageNumber() + '_' + #pageable.getPageSize()")

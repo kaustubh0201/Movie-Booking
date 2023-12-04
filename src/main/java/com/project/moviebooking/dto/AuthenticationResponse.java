@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object (DTO) representing a response after user authentication.
+ * Contains fields for a message, access token, and refresh token.
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,8 +17,18 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthenticationResponse {
 
+    /**
+     * Represents the message or status provided in the authentication response.
+     */
     private String message;
-    private String accessToken;
-    private String refreshToken;
 
+    /**
+     * Represents the access token issued after successful authentication.
+     */
+    private String accessToken;
+
+    /**
+     * Represents the refresh token used for token refresh operations.
+     */
+    private String refreshToken;
 }
