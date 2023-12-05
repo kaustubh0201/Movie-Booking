@@ -3,7 +3,7 @@ package com.project.moviebooking.service;
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.dto.BookingResponse;
 import com.project.moviebooking.exception.BookedSeatsNotFoundException;
-import com.project.moviebooking.exception.BookedSeatsOverlap;
+import com.project.moviebooking.exception.BookedSeatsOverlapException;
 import com.project.moviebooking.model.Booking;
 import org.springframework.data.domain.Pageable;
 
@@ -20,9 +20,9 @@ public interface BookingService {
      * @param bookingRequest The details of the booking to be created.
      * @return The created booking.
      * @throws BookedSeatsNotFoundException If booked seats are not found.
-     * @throws BookedSeatsOverlap          If booked seats overlap.
+     * @throws BookedSeatsOverlapException          If booked seats overlap.
      */
-    Booking createBooking(BookingRequest bookingRequest) throws BookedSeatsNotFoundException, BookedSeatsOverlap;
+    Booking createBooking(BookingRequest bookingRequest) throws BookedSeatsNotFoundException, BookedSeatsOverlapException;
 
     /**
      * Retrieves all bookings for a specific username.

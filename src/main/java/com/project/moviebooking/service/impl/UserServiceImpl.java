@@ -3,6 +3,7 @@ package com.project.moviebooking.service.impl;
 import com.project.moviebooking.dto.AuthenticationRequest;
 import com.project.moviebooking.dto.AuthenticationResponse;
 import com.project.moviebooking.dto.UserRequest;
+import com.project.moviebooking.exception.UserNotVerifiedException;
 import com.project.moviebooking.model.User;
 import com.project.moviebooking.repository.UserRepository;
 import com.project.moviebooking.service.UserService;
@@ -160,9 +161,14 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(username, password)
             );
 
-            List<String> roles = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + "not found!"))
-                    .getRoles();
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + "not found!"));
+
+            if (!user.isVerified()) {
+                throw new UserNotVerifiedException("The emailId of the user is not verified.");
+            }
+
+            List<String> roles = user.getRoles();
 
             String accessToken = jwtService.generateAccessToken(username, roles);
             String refreshToken = jwtService.generateRefreshToken(username, roles);
@@ -173,21 +179,28 @@ public class UserServiceImpl implements UserService {
                     .refreshToken(refreshToken)
                     .build();
 
+            log.info("Username: {} successfully granted access.", username);
             return ResponseEntity.ok(response);
+        } catch (UserNotVerifiedException e) {
+            response = AuthenticationResponse.builder()
+                    .message("Username: " + username + " is not verified.")
+                    .build();
 
+            log.error("Username: {} is not verified!", username);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } catch (UsernameNotFoundException e) {
             response = AuthenticationResponse.builder()
                     .message("Username: " + username + " was not found!")
                     .build();
 
-            log.info("Username: {} was not found!", username);
+            log.error("Username: {} was not found!", username);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } catch (Exception e) {
             response = AuthenticationResponse.builder()
                     .message(e.getMessage())
                     .build();
 
-            log.info("Error occurred while logging with username: {}", username);
+            log.error("Error occurred while logging with username: {}", username);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

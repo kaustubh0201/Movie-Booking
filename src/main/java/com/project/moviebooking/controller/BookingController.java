@@ -3,7 +3,7 @@ package com.project.moviebooking.controller;
 import com.project.moviebooking.constant.Constants;
 import com.project.moviebooking.dto.BookingRequest;
 import com.project.moviebooking.exception.BookedSeatsNotFoundException;
-import com.project.moviebooking.exception.BookedSeatsOverlap;
+import com.project.moviebooking.exception.BookedSeatsOverlapException;
 import com.project.moviebooking.model.Booking;
 import com.project.moviebooking.service.impl.BookingServiceImpl;
 import com.project.moviebooking.util.Utils;
@@ -62,7 +62,7 @@ public class BookingController {
             response.put("message", "Booking done successfully");
             log.info("Booking has been done successfully with bookingId: {}", booking.getBookingId());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (BookedSeatsNotFoundException | BookedSeatsOverlap e) {
+        } catch (BookedSeatsNotFoundException | BookedSeatsOverlapException e) {
             response.put("errorMessage", e.getMessage());
             log.error("Error while booking seats with error: {} and showId: {}", e.getMessage(),
                     bookingRequest.getShowId());
