@@ -3,6 +3,9 @@
 # Movie Booking Service
 
 REST APIs to get different movies in various cities made using Spring Boot framework, Mongo Database, and Redis Cache. JSON Web Token have been used for authentication and authorization.
+<br>
+<br>
+The java documentation can be found <a href="https://movie-booking-services-docs.netlify.app/">here</a>. 
 
 <hr>
 
@@ -12,7 +15,7 @@ REST APIs to get different movies in various cities made using Spring Boot frame
 
 Please follow the code snippets below to set up the environment for running the project on the local machine.
 
-### Pre-requisites
+### Pre-requisite Installation
 
 * <b>Maven</b>
 
@@ -48,11 +51,11 @@ Please follow the code snippets below to set up the environment for running the 
   > sudo apt-get install redis
   ```
 
-### Installation
+### Running the application
 
 <i>Ensure that <b>mongodb</b> is running on <b>mongodb://localhost:27017</b> and <b>redis</b> running on <b>localhost:6379</b>.</i>
 
-1. Clone the repo
+1. Clone the repository.
    ```sh
    git clone https://github.com/kaustubh0201/Movie-Booking.git
    ```
@@ -60,19 +63,34 @@ Please follow the code snippets below to set up the environment for running the 
    ```sh
    mvn install
    ```
-3. Start the spring boot application
+3. Start the spring boot application.
    ```sh
    mvn spring-boot:run
    ```
-4. Generating javadoc for the application
+4. Generating javadoc for the application.
    ```sh
    mvn javadoc:javadoc
+   ```
+   
+### Running the application using Docker
+
+1. Install `maven dependencies` from `pom.xml` file.
+   ```sh
+   mvn install
+   ```
+2. Build a docker image.
+   ```sh
+   docker build -t movie-booking/app .
+   ```
+3. Run the docker image.
+   ```shell
+   docker run -p 8080:8080 movie-booking/app
    ```
 
 ## Database Design
 
 <p align="center">
-   <img src="./readme-media-resources/ERD-Spring-Boot.png" alt="ER Diagram">
+   <img src="./readme-resources/ERD-Spring-Boot.png" alt="ER Diagram">
 </p>
 
 <hr>
@@ -178,26 +196,26 @@ Please follow the code snippets below to set up the environment for running the 
 <hr>
 
 * **Theatre**
-  * Creating a theatre
-  * Getting theatre by theatre city
-  * Getting theatre by theatre city and name
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/theatre/TheatreCreation.md">Creating a theatre</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/theatre/GettingTheatreByCity.md">Getting theatre by theatre city</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/theatre/GettingTheatreByCityAndName.md">Getting theatre by theatre city and name</a>
 <hr>
 
 * **Movie**
-  * Creating a movie
-  * Getting movie by movie name
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/movie/MovieCreation.md">Creating a movie</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/movie/GettingMovieByName.md">Getting movie by movie name</a>
 <hr>
 
 * **Show**
-  * Creating a show
-  * Getting all shows by movie
-  * Getting all shows by movie and city
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/show/ShowCreation.md">Creating a show</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/show/GettingShowByMovie.md">Getting all shows by movie</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/show/GettingShowByMovieAndCity.md">Getting all shows by movie and city</a>
 <hr>
 
 * **Booking**
-  * Create a booking
-  * Getting all bookings by username
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/booking/BookingCreation.md">Create a booking</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/booking/GettingBookingByUsername.md">Getting all bookings by username</a>
 <hr>
 
 * **User**
-  * Getting the current user
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/user/GettingCurrentUser.md">Getting the current user</a>
