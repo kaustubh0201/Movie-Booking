@@ -71,6 +71,10 @@ Please follow the code snippets below to set up the environment for running the 
    ```sh
    mvn javadoc:javadoc
    ```
+5. Access the Swagger UI for the application.
+   ```sh
+   http://localhost:8080/swagger-ui/index.html
+   ```
    
 ### Running the application using Docker
 
