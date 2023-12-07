@@ -186,36 +186,36 @@ Please follow the code snippets below to set up the environment for running the 
 
 ## Features
 * **Authentication**
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/UserSignUp.md">Signing up the user</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/UserVerification.md">Verifying the user using email OTP </a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/UserLogin.md">Logging in the user </a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/RefreshAccessToken.md">Refreshing access token </a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/ForgetPassword.md">Forget password </a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/VerifyingPasswordChange.md">Verifying OTP for password change </a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/auth/ResendingOTPUserVerification.md">Resending OTP for user verification </a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/UserSignUp.md">Signing up the user</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/UserVerification.md">Verifying the user using email OTP </a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/UserLogin.md">Logging in the user </a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/RefreshAccessToken.md">Refreshing access token </a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/ForgetPassword.md">Forget password </a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/VerifyingPasswordChange.md">Verifying OTP for password change </a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/auth/ResendingOTPUserVerification.md">Resending OTP for user verification </a>
 <hr>
 
 * **Theatre**
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/theatre/TheatreCreation.md">Creating a theatre</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/theatre/GettingTheatreByCity.md">Getting theatre by theatre city</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/theatre/GettingTheatreByCityAndName.md">Getting theatre by theatre city and name</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/theatre/TheatreCreation.md">Creating a theatre</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/theatre/GettingTheatreByCity.md">Getting theatre by theatre city</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/theatre/GettingTheatreByCityAndName.md">Getting theatre by theatre city and name</a>
 <hr>
 
 * **Movie**
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/movie/MovieCreation.md">Creating a movie</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/movie/GettingMovieByName.md">Getting movie by movie name</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/movie/MovieCreation.md">Creating a movie</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/movie/GettingMovieByName.md">Getting movie by movie name</a>
 <hr>
 
 * **Show**
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/show/ShowCreation.md">Creating a show</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/show/GettingShowByMovie.md">Getting all shows by movie</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/show/GettingShowByMovieAndCity.md">Getting all shows by movie and city</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/show/ShowCreation.md">Creating a show</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/show/GettingShowByMovie.md">Getting all shows by movie</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/show/GettingShowByMovieAndCity.md">Getting all shows by movie and city</a>
 <hr>
 
 * **Booking**
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/booking/BookingCreation.md">Create a booking</a>
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/booking/GettingBookingByUsername.md">Getting all bookings by username</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/booking/BookingCreation.md">Create a booking</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/booking/GettingBookingByUsername.md">Getting all bookings by username</a>
 <hr>
 
 * **User**
-  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-media-resources/user/GettingCurrentUser.md">Getting the current user</a>
+  * <a href="https://github.com/kaustubh0201/Movie-Booking/blob/main/readme-resources/user/GettingCurrentUser.md">Getting the current user</a>

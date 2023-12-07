@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service implementation for handling user-related operations like registration,
@@ -393,5 +394,18 @@ public class UserServiceImpl implements UserService {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    /**
+     * Sends the current logged-in user information.
+     *
+     * @param username The username for which the information is fetched.
+     * @return The response entity with details regarding the user info is returned.
+     */
+    @Override
+    public User getCurrentUser(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        return user.orElse(null);
     }
 }

@@ -1,8 +1,11 @@
 package com.project.moviebooking.controller;
 
+import com.project.moviebooking.model.User;
+import com.project.moviebooking.repository.UserRepository;
 import com.project.moviebooking.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,11 +38,22 @@ public class UserController {
      * @return An object is returned containing the information about the user.
      */
     @GetMapping("/currentUser")
-    public ResponseEntity<Map<Object, Object>> currentUser(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Map<String, Object>> currentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        Map<String, Object> response = new HashMap<>();
 
-        Map<Object, Object> model = new HashMap<>();
-        model.put("username", userDetails.getUsername());
+        try {
+            User user = userService.getCurrentUser(userDetails.getUsername());
+            response.put("currentUser", user);
+            response.put("message", "Successfully got the value of the current user.");
 
-        return ResponseEntity.ok(model);
+            log.info("Successfully fetched the information of user: {}", user.getUsername());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("errorMessage", e.getMessage());
+
+            log.error("Error while fetching information of user: {} with error: {}", userDetails.getUsername(),
+                    e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 }

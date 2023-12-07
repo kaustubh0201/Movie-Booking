@@ -3,6 +3,7 @@ package com.project.moviebooking.service;
 import com.project.moviebooking.dto.AuthenticationRequest;
 import com.project.moviebooking.dto.AuthenticationResponse;
 import com.project.moviebooking.dto.UserRequest;
+import com.project.moviebooking.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -72,4 +73,12 @@ public interface UserService {
      * @return The response entity with details regarding the OTP resend process.
      */
     ResponseEntity<AuthenticationResponse> sendOtpAgain(String emailId);
+
+    /**
+     * Sends the current logged-in user information.
+     *
+     * @param username The username for which the information is fetched.
+     * @return The response entity with details regarding the user info is returned.
+     */
+    User getCurrentUser(String username);
 }
