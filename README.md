@@ -6,6 +6,9 @@ REST APIs to get different movies in various cities made using Spring Boot frame
 <br>
 <br>
 The java documentation can be found <a href="https://movie-booking-services-docs.netlify.app/">here</a>. 
+<br>
+<br>
+The live service of the application can be found <a href="https://movie-booking-service-fipb.onrender.com/swagger-ui/index.html">here</a>.
 
 <hr>
 
